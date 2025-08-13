@@ -1,0 +1,91 @@
+.login-panel-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 420px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  padding: 40px;
+  overflow-y: auto;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.login-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+h2 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.input-field {
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+
+.password-requirements {
+  font-size: 11px;
+  color: #888;
+  margin-top: -8px;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  align-items: center;
+}
+
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.login-btn {
+  background-color: black;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0 10px;
+}
+
+.signup-text {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.create-btn {
+  background-color: white;
+  color: black;
+  padding: 14px;
+  border: 1px solid black;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}

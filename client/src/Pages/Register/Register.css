@@ -1,0 +1,42 @@
+/* Register.css */
+.register-page{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+}
+
+
+.register-card {
+  width: 100%;
+  max-width: 420px;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.register-card h2 span {
+  color: #e91e63;
+  font-weight: bold;
+}
+
+.register-card form input {
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+}
+
+.register-card button {
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 16px;
+  background-color: #e91e63;
+  border: none;
+}
+
+.register-card button:hover {
+  background-color: #d81b60;
+}
