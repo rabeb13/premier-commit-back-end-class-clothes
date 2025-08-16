@@ -1,0 +1,96 @@
+.jeans-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  transition: transform 0.2s;
+}
+
+.jeans-card:hover {
+  transform: scale(1.03);
+}
+
+.jeans-card__img-wrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.jeans-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.jeans-card__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+.jeans-card__desc {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.jeans-card__price {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.jeans-card__colors {
+  margin: 10px 0;
+}
+
+.jeans-card__colors-list {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+  justify-content: center;
+}
+
+.jeans-card__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.jeans-card__dot--active {
+  border: 2px solid #000;
+}
+
+.jeans-card__sizes {
+  margin: 10px 0;
+}
+
+.jeans-card__select {
+  margin-left: 5px;
+  padding: 3px 5px;
+}
+
+.jeans-card__btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.2s;
+}
+
+.jeans-card__btn:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.jeans-card__btn:hover:not(:disabled) {
+  background-color: #333;
+}

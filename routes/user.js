@@ -18,7 +18,7 @@ router.post("/login", loginValidation(), validation, login);
 
 // Current user (renvoie les infos décodées du token)
 router.get("/current", isAuth, (req, res) => {
-    res.send(req.user);
+    res.send({user: req.user});
 });
 
 // Update user profile

@@ -1,15 +1,15 @@
-.tshirts-page {
+.jeans-page {
   padding: 20px;
 }
 
-.tshirts-title {
+.jeans-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px; /* un peu plus d’espace */
   font-weight: 700;
 }
 
-.tshirts-grid {
+.jeans-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* cartes un peu plus larges */
   gap: 30px; /* plus d’espace entre les cartes */

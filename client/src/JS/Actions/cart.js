@@ -13,15 +13,22 @@ export const fetchCart = () => async (dispatch) => {
   }
 };
 
+
 export const addToCart = ({ productId, color, size, quantity }) => async (dispatch) => {
   dispatch({ type: CART_LOAD });
   try {
-    const { data } = await axios.post("/api/cart/add", { productId, color, size, quantity });
+    const { data } = await axios.post("/api/cart/add", {
+       productId, 
+       color, 
+       size, 
+       quantity });
+    // data.items doit contenir la liste complète du panier
     dispatch({ type: CART_SET, payload: data.items || [] });
   } catch (error) {
     dispatch({ type: CART_FAIL, payload: error?.response?.data || error.message });
   }
 };
+
 
 export const updateCartQty = (itemId, quantity) => async (dispatch) => {
   dispatch({ type: CART_LOAD });

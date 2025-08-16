@@ -4,7 +4,7 @@ const Cart = require("../models/Cart");
 
 // GET cart
 router.get("/", async (req, res) => {
-  let cart = await Cart.findOne();
+  let cart = await Cart.findOne().populate("items.productId"); // <-- important !
   if (!cart) {
     cart = new Cart({ items: [] });
     await cart.save();
@@ -12,16 +12,20 @@ router.get("/", async (req, res) => {
   res.json(cart);
 });
 
+
 // POST add to cart
 router.post("/add", async (req, res) => {
   const { productId, color, size, quantity } = req.body;
+
   let cart = await Cart.findOne();
   if (!cart) {
     cart = new Cart({ items: [] });
   }
 
   const existingItem = cart.items.find(
-    i => i.productId.toString() === productId && i.color === color && i.size === size
+    i => i.productId.toString() === productId && 
+    i.color === color && 
+    i.size === size
   );
 
   if (existingItem) {
@@ -37,7 +41,7 @@ router.post("/add", async (req, res) => {
 // PATCH update quantity
 router.patch("/update/:id", async (req, res) => {
   const { quantity } = req.body;
-  let cart = await Cart.findOne();
+  let cart = await Cart.findOne().populate("items.productId"); // <-- important !
   const item = cart.items.id(req.params.id);
   if (item) {
     item.quantity = quantity;
@@ -51,7 +55,7 @@ router.delete("/remove/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const cart = await Cart.findOne();
+  let cart = await Cart.findOne().populate("items.productId"); // <-- important !
     if (!cart) return res.status(404).json({ error: "Panier introuvable" });
 
     const item = cart.items.id(id);

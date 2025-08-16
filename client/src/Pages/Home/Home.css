@@ -17,6 +17,13 @@
   font-weight: 700;
   font-size: 1.8rem;
 }
+.cart-img, .product-card img {
+  width: 100%;
+  height: 500px; /* ou 250px selon la hauteur des autres cartes */
+  object-fit: cover; /* garde le ratio et remplit le cadre */
+  border-radius: 8px;
+}
+
 
 .products-grid {
   display: grid;

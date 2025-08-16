@@ -13,6 +13,9 @@ const suggestionsData = [
   { id: 2, name: 'Ceinture à rivets', price: '17,99', image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
   { id: 4, name: 'Ceinture chaîne étoiles de mer', price: '12,99', image: 'https://images.unsplash.com/photo-1705326454933-9685fc6888e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
   { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://images.unsplash.com/photo-1610213665246-eb2df074f8e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
+  { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://images.unsplash.com/photo-1723802205505-2f88b2227718?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YWNjZXNzb2lyZXN8ZW58MHx8MHx8fDA%3D' },
+  { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://plus.unsplash.com/premium_photo-1709033404514-c3953af680b4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YWNjZXNzb2lyZXN8ZW58MHx8MHx8fDA%3D' },
+
 ];
 
 const categories = [

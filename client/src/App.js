@@ -1,5 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import Home from "./Pages/Home/Home";
 import Register from "./Pages/Register/Register";
 import Login from "./Pages/Login/Login";
@@ -14,21 +17,21 @@ import Bags from "./Pages/Bags/Bags";
 import Accessories from "./Pages/Accessories/Accessories";
 import TotalLook from "./Pages/TotalLook/TotalLook";
 import Info from "./Pages/Info/Info";
-import Cart from "./Pages/Cart/Cart"; // ✅ nouvelle page panier
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; // ✅ selector ajouté
+import Cart from "./Pages/Cart/Cart";
+
 import { current } from "./JS/Actions/user";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import LoginPanel from "./Components/LoginPanel";
+import ProductList from "./Components/ProductList/ProductList";
 
 function App() {
   const dispatch = useDispatch();
   const [showLogin, setShowLogin] = useState(false);
 
-  // ✅ compteur panier (somme des quantités)
+  // compteur panier (somme des quantités)
   const cartCount = useSelector(
-    (s) => s.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
+    (state) => state.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
   );
 
   useEffect(() => {
@@ -38,10 +41,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* ✅ on envoie le compteur à la NavBar + ouverture du panneau login */}
       <NavBar cartCount={cartCount} onLoginClick={() => setShowLogin(true)} />
-
-      {/* ✅ panneau de login conservé */}
       <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
 
       <main>
@@ -59,7 +59,7 @@ function App() {
           <Route path="/accessories" element={<Accessories />} />
           <Route path="/total-look" element={<TotalLook />} />
           <Route path="/info" element={<Info />} />
-          <Route path="/cart" element={<Cart />} /> {/* ✅ nouvelle route */}
+          <Route path="/cart" element={<Cart />} />
           <Route path="/*" element={<Error />} />
         </Routes>
       </main>
