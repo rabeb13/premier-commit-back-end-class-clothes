@@ -15,11 +15,11 @@ export default function ProductCard({ product }) {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
+  // Choix de l'image à afficher
   const displayedImage =
-  (selectedColor && product.images?.[selectedColor]) || 
-  product.image || 
-  (product.images ? Object.values(product.images)[0] : "");
-
+    (selectedColor && product.images?.[selectedColor]) || 
+    product.image || 
+    (product.images ? Object.values(product.images)[0] : "");
 
   // Ajouter au panier
   const handleAddToCart = () => {
@@ -30,6 +30,8 @@ export default function ProductCard({ product }) {
     dispatch(
       addToCart({
         productId: product._id,
+        name: product.name,
+        price: product.price,
         color: selectedColor,
         size: selectedSize,
         quantity: 1,
@@ -64,6 +66,7 @@ export default function ProductCard({ product }) {
       <h3>{product.name}</h3>
       <p>{product.price} DT</p>
 
+      {/* Couleurs */}
       <div className="colors">
         {product.colors?.map((c) => (
           <button
@@ -81,6 +84,7 @@ export default function ProductCard({ product }) {
         ))}
       </div>
 
+      {/* Tailles */}
       <div className="sizes">
         {product.sizes?.map((s) => (
           <button

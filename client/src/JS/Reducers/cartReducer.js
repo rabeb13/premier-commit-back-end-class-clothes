@@ -8,7 +8,7 @@ export default function cartReducer(state = init, { type, payload }) {
       return { ...state, load: true, error: null };
 
     case CART_SET:
-      // payload = array d’items { productId, color, size, quantity }
+      // payload = array d’items complets : productId, name, price, image, color, size, quantity
       return { ...state, load: false, items: payload || [] };
 
     case CART_FAIL:

@@ -12,14 +12,14 @@ const EditProduct = () => {
   const productToEdit = useSelector((state) => state.product.productToGet);
 
   const [product, setProduct] = useState({
-    name: "",
-    category: "",
-    price: "",
-    colors: [],
-    sizes: [],
-    image: "",
-    images: {} // pour Map ou objet images
-  });
+  name: "",
+  category: "",
+  price: "",
+  colors: [],
+  sizes: [],
+  image: "",
+  images: [] // 🔹 tableau
+});
 
   // Récupérer le produit depuis le backend
   useEffect(() => {
@@ -35,17 +35,25 @@ const EditProduct = () => {
         price: productToEdit.price || "",
         colors: productToEdit.colors || [],
         sizes: productToEdit.sizes || [],
-        image: Object.values(productToEdit.images || {})[0] || "",
+        image: productToEdit.images?.[0] || "",
         images: productToEdit.images || {},
       });
     }
   }, [productToEdit]);
 
-  // Gestion des champs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+// handleChange pour l'image
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  if (name === "image") {
+    setProduct({
+      ...product,
+      image: value,
+      images: [value], // 🔹 mettre à jour le tableau
+    });
+  } else {
     setProduct({ ...product, [name]: value });
-  };
+  }
+};
 
   // Gestion du submit
   const handleSubmit = (e) => {

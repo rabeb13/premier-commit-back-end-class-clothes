@@ -39,7 +39,7 @@ function App() {
     (state) => state.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
   );
 
-  const user = useSelector((state) => state.user?.currentUser); // récupérer user depuis Redux
+const user = useSelector((state) => state.user?.user); // au lieu de currentUser
 
   useEffect(() => {
     const token = localStorage.getItem("token");
