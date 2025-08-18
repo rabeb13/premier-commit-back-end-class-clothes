@@ -18,7 +18,10 @@ import Accessories from "./Pages/Accessories/Accessories";
 import TotalLook from "./Pages/TotalLook/TotalLook";
 import Info from "./Pages/Info/Info";
 import Cart from "./Pages/Cart/Cart";
-import Checkout from "./Pages/Checkout/Checkout"; // 👈 importer la page
+import Checkout from "./Pages/Checkout/Checkout";
+import AdminPanel from "./Pages/Admin/AdminPanel";
+import AddProduct from "./Pages/Admin/AddProduct";
+import EditProduct from "./Pages/Admin/EditProduct";
 
 import { current } from "./JS/Actions/user";
 import NavBar from "./Components/NavBar";
@@ -36,6 +39,8 @@ function App() {
     (state) => state.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
   );
 
+  const user = useSelector((state) => state.user?.currentUser); // récupérer user depuis Redux
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) dispatch(current());
@@ -44,17 +49,17 @@ function App() {
   return (
     <div className="App">
       <NavBar cartCount={cartCount} onLoginClick={() => setShowLogin(true)} />
-      <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
+      {showLogin && <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />}
 
-      {/* ⚡ Toast global */}
-<ToastContainer
-  position="top-right"
-  autoClose={2000} // 1,5 sec
-  hideProgressBar={false}
-  newestOnTop={true} // ⚡ affiche le toast le plus récent en haut
-  closeOnClick
-  pauseOnHover
-/>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+      />
+
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -71,7 +76,11 @@ function App() {
           <Route path="/total-look" element={<TotalLook />} />
           <Route path="/info" element={<Info />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />  // 👈 ajouter cette ligne
+          <Route path="/checkout" element={<Checkout />} />
+          {/* Route admin protégée */}
+          <Route path="/admin" element={user?.isAdmin ? <AdminPanel user={user} /> : <Login />} />
+          <Route path="/add-product" element={<AddProduct />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/*" element={<Error />} />
         </Routes>
       </main>

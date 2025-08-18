@@ -15,9 +15,9 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, user } = useSelector((state) => state.user);
 
-  // ✅ compteur panier
+  // compteur panier
   const cartCount = useSelector(
     (state) => state.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
   );
@@ -49,36 +49,20 @@ const NavBar = () => {
         <div className="right-section">
           <FaSearch className="nav-icon" />
 
-          {/* ✅ Icône Panier + badge + lien */}
-          <Link to="/cart" className="cart-link" style={{ position: 'relative' }}>
+          {/* Panier */}
+          <Link to="/cart" className="cart-link">
             <FaShoppingBag className="nav-icon" />
-            {cartCount > 0 && (
-              <span
-                className="cart-badge"
-                style={{
-                  position: 'absolute',
-                  top: -6,
-                  right: -8,
-                  background: '#e11d48',
-                  color: '#fff',
-                  borderRadius: '9999px',
-                  fontSize: 12,
-                  lineHeight: '16px',
-                  minWidth: 18,
-                  height: 18,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '0 5px',
-                  fontWeight: 700,
-                }}
-              >
-                {cartCount}
-              </span>
-            )}
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </Link>
 
-          {/* Compte utilisateur */}
+          {/* Admin Panel (visible seulement si admin) */}
+          {isAuth && user?.isAdmin && (
+            <button onClick={() => navigate('/admin')} className="admin-btn">
+              Admin Panel
+            </button>
+          )}
+
+          {/* Login / Profil */}
           {!isAuth ? (
             <FaUser
               className="nav-icon"
@@ -95,7 +79,7 @@ const NavBar = () => {
             />
           )}
 
-          {/* Logout si connecté */}
+          {/* Logout */}
           {isAuth && (
             <button onClick={handleLogout} className="logout-btn">
               Logout

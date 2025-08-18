@@ -1,92 +1,68 @@
-/* src/Components/Navbar.css */
+/* NavBar.css */
 
+/* Container global */
 .lefties-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 65px;
+  background-color: #fff;
   padding: 0 20px;
-  background: white;
-  border-bottom: 1px solid #ddd;
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
-  z-index: 999;
-  font-family: Arial, sans-serif;
+  z-index: 100;
 }
 
-.left-section,
-.right-section {
+/* Left section (menu) */
+.left-section {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
-.logo {
-  font-weight: bold;
+.menu-icon {
   font-size: 22px;
-  text-transform: uppercase;
-}
-
-.menu-icon,
-.nav-icon {
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.main-menu a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
-  margin: 0 8px;
-}
-
-.logout-btn {
-  background: none;
-  border: none;
-  color: black;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s ease;
-}
-
-.logout-btn:hover {
-  color: #e60023;
-}
-.menu-link {
-  text-decoration: none;
-  color: inherit;
-  font-weight: bold;
   margin-right: 15px;
   cursor: pointer;
 }
-.nav-account {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
 
-.nav-text {
-  font-size: 0.9rem;
+.main-menu .menu-link {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #333;
   font-weight: 500;
 }
-/* Icône panier avec lien */
-.cart-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: inherit;
+
+/* Center logo */
+.logo a {
+  font-size: 24px;
+  font-weight: bold;
+  color: #111;
 }
 
-/* Badge compteur panier */
+/* Right section */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Panier badge */
+.cart-link {
+  position: relative;
+}
+
 .cart-badge {
   position: absolute;
   top: -6px;
   right: -8px;
-  background: #e11d48; /* rouge vif */
-  color: white;
+  background: #e11d48;
+  color: #fff;
   border-radius: 9999px;
   font-size: 12px;
   line-height: 16px;
@@ -97,17 +73,58 @@
   justify-content: center;
   padding: 0 5px;
   font-weight: 700;
-  box-shadow: 0 0 0 2px white; /* petit contour blanc */
 }
 
-/* Ajuste la taille sur mobile */
-@media (max-width: 480px) {
-  .cart-badge {
-    font-size: 10px;
-    min-width: 16px;
-    height: 16px;
-    top: -4px;
-    right: -6px;
+/* Admin Button */
+.admin-btn {
+  background-color: #111;
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.admin-btn:hover {
+  background-color: #333;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: transparent;
+  color: #111;
+  border: 1px solid #111;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #111;
+  color: #fff;
+}
+
+/* Responsive pour mobile */
+@media screen and (max-width: 768px) {
+  .main-menu {
+    display: none;
+  }
+  
+  .left-section .menu-icon {
+    margin-right: 0;
+  }
+
+  .right-section {
+    gap: 10px;
+  }
+
+  .admin-btn,
+  .logout-btn {
+    padding: 4px 8px;
+    font-size: 12px;
   }
 }
-

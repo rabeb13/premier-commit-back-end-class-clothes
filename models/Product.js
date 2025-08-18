@@ -6,10 +6,7 @@ const productSchema = new mongoose.Schema({
   price: Number,
   colors: [String],
   sizes: [String],
-  images: {
-    type: Map,
-    of: String, // clé = couleur, valeur = URL image
-  },
+  images: [String], // 👈 tableau d'URLs d'images
   category: { type: String, required: true }
 });
 

@@ -26,9 +26,10 @@ app.use(
 
 // routes
 app.use("/api/user", require("./routes/user"));
+app.use("/api/auth", require("./routes/auth"));       // 👈 routes auth (créées plus bas)
 app.use("/api/products", require("./routes/product"));
 app.use("/api/cart", require("./routes/cart"));
-app.use("/api/orders", require("./routes/orders"));
+// app.use("/api/orders", require("./routes/orders"));
 
 
 // health check (pour tester vite dans le navigateur)

@@ -8,35 +8,48 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuth, errors } = useSelector((state) => state.user);
+  const { isAuth, errors, currentUser } = useSelector((state) => state.user);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Redirection après login — déclenche current() seulement si token présent
+  // Redirection après login si authentifié
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (isAuth && token) {
-      (async () => {
-        try {
-          await dispatch(current());
-        } finally {
-          navigate('/');
-        }
-      })();
+      dispatch(current())
+        .finally(() => {
+          // redirige vers home ou admin si admin
+          if (currentUser?.isAdmin) navigate('/admin');
+          else navigate('/');
+        });
     }
-  }, [isAuth, navigate, dispatch]);
+  }, [isAuth, dispatch, navigate, currentUser]);
 
-  // Nettoyer les erreurs en quittant la page
+  // Nettoyer les erreurs à la sortie du composant
   useEffect(() => {
-    return () => {
-      dispatch(clearErrors());
-    };
+    return () => dispatch(clearErrors());
   }, [dispatch]);
 
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(login({ email, password }));
+  };
+
+  const renderErrors = () => {
+    if (!errors) return null;
+    if (Array.isArray(errors)) {
+      return errors.map((el, i) => (
+        <p key={i} style={{ color: 'red', fontSize: '13px' }}>
+          {typeof el === 'string' ? el : el.msg}
+        </p>
+      ));
+    }
+    return (
+      <p style={{ color: 'red', fontSize: '13px' }}>
+        {typeof errors === 'string' ? errors : errors.msg}
+      </p>
+    );
   };
 
   return (
@@ -45,18 +58,7 @@ const Login = () => {
         <h2>LOG IN</h2>
         <p>Type your email address and password to enter</p>
 
-        {Array.isArray(errors) ? (
-  errors.map((el, i) => (
-    <p key={i} style={{ color: 'red', fontSize: '13px' }}>
-      {typeof el === 'string' ? el : el.msg}
-    </p>
-  ))
-) : errors ? (
-  <p style={{ color: 'red', fontSize: '13px' }}>
-    {typeof errors === 'string' ? errors : errors.msg}
-  </p>
-) : null}
-
+        {renderErrors()}
 
         <form onSubmit={handleLogin}>
           <input

@@ -1,52 +1,66 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../JS/Actions/cart";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.user);
+  const isAdmin = user?.isAdmin;
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
   const displayedImage =
-    selectedColor && product.images?.[selectedColor]
-      ? product.images[selectedColor]
-      : product.images?.[product.colors?.[0]] || product.image;
+  (selectedColor && product.images?.[selectedColor]) || 
+  product.image || 
+  (product.images ? Object.values(product.images)[0] : "");
 
+
+  // Ajouter au panier
   const handleAddToCart = () => {
-  if (!selectedColor || !selectedSize) {
-    toast.error("Veuillez choisir une couleur et une taille !", {
-      toastId: `error-${product._id}`,
-      autoClose: 2000,
-      pauseOnFocusLoss: false,
-    });
-    return;
-  }
+    if (!selectedColor || !selectedSize) {
+      toast.error("Veuillez choisir une couleur et une taille !");
+      return;
+    }
+    dispatch(
+      addToCart({
+        productId: product._id,
+        color: selectedColor,
+        size: selectedSize,
+        quantity: 1,
+        image: displayedImage,
+      })
+    );
+    toast.success("Produit ajouté au panier ✔");
+  };
 
-  dispatch(
-    addToCart({
-      productId: product._id,
-      color: selectedColor,
-      size: selectedSize,
-      quantity: 1,
-      image: displayedImage,
-    })
-  );
+  // Supprimer produit (admin)
+  const handleDelete = async () => {
+    if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
+    try {
+      await axios.delete(`/api/products/${product._id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      toast.success("Produit supprimé !");
+      window.location.reload();
+    } catch (err) {
+      toast.error("Erreur lors de la suppression !");
+    }
+  };
 
-  toast.success("Produit ajouté au panier ✔", {
-    toastId: `cart-${product._id}-${selectedColor}-${selectedSize}`,
-    autoClose: 2000,
-    pauseOnFocusLoss: false,
-  });
-
+  // Edit produit (admin)
+  const handleEdit = () => {
+    navigate(`/edit-product/${product._id}`);
   };
 
   return (
     <div className="product-card">
       <img src={displayedImage} alt={product.name} className="product-img" />
-
       <h3>{product.name}</h3>
       <p>{product.price} DT</p>
 
@@ -82,6 +96,13 @@ export default function ProductCard({ product }) {
       <button onClick={handleAddToCart} className="add-to-cart">
         Ajouter au panier
       </button>
+
+      {isAdmin && (
+        <div className="admin-actions">
+          <button onClick={handleEdit} className="edit-btn">✏ Modifier</button>
+          <button onClick={handleDelete} className="delete-btn">🗑 Supprimer</button>
+        </div>
+      )}
     </div>
   );
 }
