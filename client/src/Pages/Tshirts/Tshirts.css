@@ -5,13 +5,27 @@
 .tshirts-title {
   text-align: center;
   font-size: 2rem;
-  margin-bottom: 30px; /* un peu plus d’espace */
+  margin-bottom: 30px;
   font-weight: 700;
 }
 
 .tshirts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* cartes un peu plus larges */
-  gap: 30px; /* plus d’espace entre les cartes */
-  justify-items: center;
+  grid-template-columns: repeat(4, 1fr); /* exactement 4 colonnes */
+  gap: 30px; /* espace entre les cartes */
+  padding: 10px;
+}
+
+/* Tablette (≤ 1024px) → 2 colonnes */
+@media (max-width: 1024px) {
+  .tshirts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile (≤ 600px) → 1 colonne */
+@media (max-width: 600px) {
+  .tshirts-grid {
+    grid-template-columns: 1fr;
+  }
 }

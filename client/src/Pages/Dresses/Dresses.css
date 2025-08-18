@@ -18,14 +18,14 @@
 
 /* Tablette (≤ 1024px) → 2 colonnes */
 @media (max-width: 1024px) {
-  .jeans-grid {
+  .dresses-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Mobile (≤ 600px) → 1 colonne */
 @media (max-width: 600px) {
-  .jeans-grid {
+  .dresses-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -18,12 +18,14 @@ import Accessories from "./Pages/Accessories/Accessories";
 import TotalLook from "./Pages/TotalLook/TotalLook";
 import Info from "./Pages/Info/Info";
 import Cart from "./Pages/Cart/Cart";
+import Checkout from "./Pages/Checkout/Checkout"; // 👈 importer la page
 
 import { current } from "./JS/Actions/user";
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import LoginPanel from "./Components/LoginPanel";
-import ProductList from "./Components/ProductList/ProductList";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,6 +46,15 @@ function App() {
       <NavBar cartCount={cartCount} onLoginClick={() => setShowLogin(true)} />
       <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
 
+      {/* ⚡ Toast global */}
+<ToastContainer
+  position="top-right"
+  autoClose={2000} // 1,5 sec
+  hideProgressBar={false}
+  newestOnTop={true} // ⚡ affiche le toast le plus récent en haut
+  closeOnClick
+  pauseOnHover
+/>
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -60,6 +71,7 @@ function App() {
           <Route path="/total-look" element={<TotalLook />} />
           <Route path="/info" element={<Info />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />  // 👈 ajouter cette ligne
           <Route path="/*" element={<Error />} />
         </Routes>
       </main>

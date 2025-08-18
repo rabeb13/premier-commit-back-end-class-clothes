@@ -1,37 +1,55 @@
-// src/Components/ProductCard/ProductCard.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../JS/Actions/cart";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
 
-  const handleAddToCart = () => {
-    if (!selectedColor || !selectedSize) {
-      alert("Veuillez choisir une couleur et une taille !");
-      return;
-    }
+  const displayedImage =
+    selectedColor && product.images?.[selectedColor]
+      ? product.images[selectedColor]
+      : product.images?.[product.colors?.[0]] || product.image;
 
-    dispatch(
-      addToCart({
-        productId: product._id,
-        color: selectedColor,
-        size: selectedSize,
-        quantity: 1,
-      })
-    );
+  const handleAddToCart = () => {
+  if (!selectedColor || !selectedSize) {
+    toast.error("Veuillez choisir une couleur et une taille !", {
+      toastId: `error-${product._id}`,
+      autoClose: 2000,
+      pauseOnFocusLoss: false,
+    });
+    return;
+  }
+
+  dispatch(
+    addToCart({
+      productId: product._id,
+      color: selectedColor,
+      size: selectedSize,
+      quantity: 1,
+      image: displayedImage,
+    })
+  );
+
+  toast.success("Produit ajouté au panier ✔", {
+    toastId: `cart-${product._id}-${selectedColor}-${selectedSize}`,
+    autoClose: 2000,
+    pauseOnFocusLoss: false,
+  });
+
   };
 
   return (
     <div className="product-card">
-      <img src={product.image} alt={product.name} />
+      <img src={displayedImage} alt={product.name} className="product-img" />
 
       <h3>{product.name}</h3>
       <p>{product.price} DT</p>
 
-      {/* Boutons couleur */}
       <div className="colors">
         {product.colors?.map((c) => (
           <button
@@ -43,12 +61,12 @@ export default function ProductCard({ product }) {
               width: 24,
               height: 24,
               margin: 4,
+              cursor: "pointer",
             }}
           />
         ))}
       </div>
 
-      {/* Boutons taille */}
       <div className="sizes">
         {product.sizes?.map((s) => (
           <button
@@ -61,7 +79,9 @@ export default function ProductCard({ product }) {
         ))}
       </div>
 
-      <button onClick={handleAddToCart}>Ajouter au panier</button>
+      <button onClick={handleAddToCart} className="add-to-cart">
+        Ajouter au panier
+      </button>
     </div>
   );
 }

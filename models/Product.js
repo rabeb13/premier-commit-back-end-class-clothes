@@ -6,10 +6,11 @@ const productSchema = new mongoose.Schema({
   price: Number,
   colors: [String],
   sizes: [String],
-  image: String, 
-  category: { type: String, required: true } // 👈 ajouté
-
-  
+  images: {
+    type: Map,
+    of: String, // clé = couleur, valeur = URL image
+  },
+  category: { type: String, required: true }
 });
 
 module.exports = mongoose.model("Product", productSchema);

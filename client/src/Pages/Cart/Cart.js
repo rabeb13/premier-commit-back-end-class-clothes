@@ -1,7 +1,8 @@
-// src/Pages/Cart/Cart.jsx
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart, updateCartQty, removeCartItem } from "../../JS/Actions/cart";
+import { useNavigate } from "react-router-dom";
+
 import "./Cart.css";
 
 // ✅ toasts
@@ -10,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { items = [], load, error } = useSelector((s) => s.cart || {});
 
   React.useEffect(() => { dispatch(fetchCart()); }, [dispatch]);
@@ -63,13 +65,16 @@ export default function Cart() {
                 className="cart-row"
               >
                 <div className="cart-col img">
-                  {it.productId?.image && (
-                    <img
-                      src={it.productId.image}
-                      alt={it.productId?.name || ""}
-                      className="cart-img"
-                    />
-                  )}
+                  {/* ⚡ Affiche l'image correspondant à la couleur choisie */}
+                  <img
+                    src={
+                      it.image // image ajoutée au panier
+                      || it.productId?.image // fallback : image par défaut du produit
+                      || (it.productId?.images ? it.productId.images[it.productId.colors?.[0]] : "")
+                    }
+                    alt={it.productId?.name || ""}
+                    className="cart-img"
+                  />
                 </div>
 
                 <div className="cart-col info">
@@ -111,10 +116,17 @@ export default function Cart() {
           <div className="cart-summary">
             <div className="sum-label">Total</div>
             <div className="sum-value">{fmt(grandTotal)} DT</div>
-          </div>
+            {items.length > 0 && (
+           <button
+           className="checkout-btn"
+            onClick={() => navigate("/checkout")}
+    >
+      Passer à la commande
+    </button>
+  )}
+</div>
         </>
       )}
     </div>
   );
 }
-

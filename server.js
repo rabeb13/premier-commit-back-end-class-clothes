@@ -28,6 +28,8 @@ app.use(
 app.use("/api/user", require("./routes/user"));
 app.use("/api/products", require("./routes/product"));
 app.use("/api/cart", require("./routes/cart"));
+app.use("/api/orders", require("./routes/orders"));
+
 
 // health check (pour tester vite dans le navigateur)
 app.get("/api/health", (req, res) => res.json({ ok: true }));
