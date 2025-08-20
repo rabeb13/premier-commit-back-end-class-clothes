@@ -11,26 +11,49 @@ import './NavBar.css';
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showResults, setShowResults] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { isAuth, user } = useSelector((state) => state.user);
-
-  // compteur panier
   const cartCount = useSelector(
     (state) => state.cart?.items?.reduce((sum, it) => sum + (it?.quantity || 0), 0) || 0
   );
+
+  // Liste des pages/catégories
+  const pages = ['Tshirts', 'Jeans', 'Dresses', 'Accessories'];
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
 
+  const filteredResults = pages.filter(p =>
+    p.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // ⚡ Gestion Search (Entrée ou bouton)
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!searchTerm) return;
+
+    const match = pages.find(
+      (p) => p.toLowerCase() === searchTerm.toLowerCase()
+    );
+
+    if (match) {
+      navigate(`/${match.toLowerCase()}`);
+      setSearchTerm('');
+      setShowResults(false);
+    } else {
+      alert('Page non trouvée');
+    }
+  };
+
   return (
     <>
       <header className="lefties-navbar">
-        {/* Left */}
         <div className="left-section">
           <FaBars className="menu-icon" onClick={() => setShowMenu(true)} />
           <nav className="main-menu">
@@ -38,16 +61,52 @@ const NavBar = () => {
           </nav>
         </div>
 
-        {/* Center logo */}
         <div className="logo">
           <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
             Class Clothing
           </Link>
         </div>
 
-        {/* Right icons */}
         <div className="right-section">
-          <FaSearch className="nav-icon" />
+          {/* SearchBar */}
+          <form onSubmit={handleSearch} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Que Recherchez Vous?"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowResults(true);
+              }}
+              onBlur={() => setTimeout(() => setShowResults(false), 150)}
+            />
+            <button type="submit" className="search-button">
+              <FaSearch className="nav-icon" />
+            </button>
+
+            {showResults && searchTerm && (
+              <div className="search-results">
+                {filteredResults.length ? (
+                  filteredResults.map((p, i) => (
+                    <div
+                      key={i}
+                      className="search-item"
+                      onClick={() => {
+                        navigate(`/${p.toLowerCase()}`);
+                        setSearchTerm('');
+                        setShowResults(false);
+                      }}
+                    >
+                      {p}
+                    </div>
+                  ))
+                ) : (
+                  <div className="search-item">Aucun résultat</div>
+                )}
+              </div>
+            )}
+          </form>
 
           {/* Panier */}
           <Link to="/cart" className="cart-link">
@@ -55,7 +114,7 @@ const NavBar = () => {
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </Link>
 
-          {/* Admin Panel (visible seulement si admin) */}
+          {/* Admin Panel */}
           {isAuth && user?.isAdmin && (
             <button onClick={() => navigate('/admin')} className="admin-btn">
               Admin Panel
@@ -64,34 +123,17 @@ const NavBar = () => {
 
           {/* Login / Profil */}
           {!isAuth ? (
-            <FaUser
-              className="nav-icon"
-              onClick={() => setShowLogin(true)}
-              style={{ cursor: 'pointer' }}
-              title="Mon compte"
-            />
+            <FaUser className="nav-icon" onClick={() => setShowLogin(true)} title="Mon compte" />
           ) : (
-            <FaUser
-              className="nav-icon"
-              onClick={() => navigate('/profile')}
-              style={{ cursor: 'pointer' }}
-              title="Mon profil"
-            />
+            <FaUser className="nav-icon" onClick={() => navigate('/profile')} title="Mon profil" />
           )}
 
           {/* Logout */}
-          {isAuth && (
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          )}
+          {isAuth && <button onClick={handleLogout} className="logout-btn">Logout</button>}
         </div>
       </header>
 
-      {/* Menu latéral */}
       <SideMenu show={showMenu} onClose={() => setShowMenu(false)} />
-
-      {/* Login Panel */}
       <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
     </>
   );

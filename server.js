@@ -26,10 +26,43 @@ app.use(
 
 // routes
 app.use("/api/user", require("./routes/user"));
-app.use("/api/auth", require("./routes/auth"));       // 👈 routes auth (créées plus bas)
+app.use("/api/auth", require("./routes/auth"));       
 app.use("/api/products", require("./routes/product"));
 app.use("/api/cart", require("./routes/cart"));
 // app.use("/api/orders", require("./routes/orders"));
+
+// ✅ Cloudinary upload route
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
+
+// config cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+// config multer (stockage mémoire)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// route upload
+app.post("/api/upload", upload.single("image"), async (req, res) => {
+  try {
+    cloudinary.uploader.upload_stream(
+      { folder: "my_app" },
+      (error, result) => {
+        if (error) return res.status(500).json({ error });
+        res.json({ 
+          url: result.secure_url,
+          public_id: result.public_id
+        });
+      }
+    ).end(req.file.buffer);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 // health check (pour tester vite dans le navigateur)

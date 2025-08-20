@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../JS/Actions/cart";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -12,16 +11,17 @@ export default function ProductCard({ product }) {
   const { user } = useSelector((state) => state.user);
   const isAdmin = user?.isAdmin;
 
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || null);
   const [selectedSize, setSelectedSize] = useState(null);
 
-  // Choix de l'image à afficher
-  const displayedImage =
-    (selectedColor && product.images?.[selectedColor]) || 
-    product.image || 
-    (product.images ? Object.values(product.images)[0] : "");
+  // ⚡ Choisir l’image correspondant à la couleur
+  const getImageByColor = (color) => {
+    const imgObj = product.images.find(img => img.color === color);
+    return imgObj ? imgObj.url : product.images[0]?.url || "";
+  };
 
-  // Ajouter au panier
+  const displayedImage = selectedColor ? getImageByColor(selectedColor) : product.images[0]?.url || "";
+
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
       toast.error("Veuillez choisir une couleur et une taille !");
@@ -41,34 +41,14 @@ export default function ProductCard({ product }) {
     toast.success("Produit ajouté au panier ✔");
   };
 
-  // Supprimer produit (admin)
-  const handleDelete = async () => {
-    if (!window.confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
-    try {
-      await axios.delete(`/api/products/${product._id}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      toast.success("Produit supprimé !");
-      window.location.reload();
-    } catch (err) {
-      toast.error("Erreur lors de la suppression !");
-    }
-  };
-
-  // Edit produit (admin)
-  const handleEdit = () => {
-    navigate(`/edit-product/${product._id}`);
-  };
-
   return (
     <div className="product-card">
       <img src={displayedImage} alt={product.name} className="product-img" />
       <h3>{product.name}</h3>
       <p>{product.price} DT</p>
 
-      {/* Couleurs */}
       <div className="colors">
-        {product.colors?.map((c) => (
+        {product.colors?.map(c => (
           <button
             key={c}
             onClick={() => setSelectedColor(c)}
@@ -84,9 +64,8 @@ export default function ProductCard({ product }) {
         ))}
       </div>
 
-      {/* Tailles */}
       <div className="sizes">
-        {product.sizes?.map((s) => (
+        {product.sizes?.map(s => (
           <button
             key={s}
             onClick={() => setSelectedSize(s)}
@@ -100,13 +79,6 @@ export default function ProductCard({ product }) {
       <button onClick={handleAddToCart} className="add-to-cart">
         Ajouter au panier
       </button>
-
-      {isAdmin && (
-        <div className="admin-actions">
-          <button onClick={handleEdit} className="edit-btn">✏ Modifier</button>
-          <button onClick={handleDelete} className="delete-btn">🗑 Supprimer</button>
-        </div>
-      )}
     </div>
   );
 }

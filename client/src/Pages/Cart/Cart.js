@@ -10,12 +10,14 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { items = [], load, error } = useSelector((s) => s.cart || {});
+  const { items = [], load = false, error = null } = useSelector((s) => s.cart || {});
 
+  // ⚡ Charger le panier
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
 
+  // 🔹 Fonctions de mise à jour quantité
   const inc = (item) => {
     dispatch(updateCartQty(item._id, item.quantity + 1));
     toast.success("Quantité mise à jour ✔");
@@ -38,11 +40,13 @@ export default function Cart() {
     toast.warn("Article supprimé du panier");
   };
 
+  // 🔹 Calculs
   const fmt = (n) => Number(n || 0).toFixed(2);
   const unitPrice = (it) => Number(it.price || it.productId?.price || 0);
   const itemTotal = (it) => unitPrice(it) * (it.quantity || 0);
   const grandTotal = items.reduce((sum, it) => sum + itemTotal(it), 0);
 
+  // ⚡ Affichage état
   if (load) return <div className="cart-wrap"><div className="cart-status">Chargement…</div></div>;
   if (error) return <div className="cart-wrap"><div className="cart-status error">{String(error)}</div></div>;
 
@@ -57,7 +61,10 @@ export default function Cart() {
         <>
           <div className="cart-list">
             {items.map((it, index) => (
-              <div key={`${it._id}-${it.color}-${it.size}-${index}`} className="cart-row">
+              <div
+                key={`${it._id}-${it.color}-${it.size}-${index}`}
+                className="cart-row"
+              >
                 <div className="cart-col img">
                   <img
                     src={it.image || it.productId?.image || ""}
@@ -83,7 +90,7 @@ export default function Cart() {
                       className="qty-input"
                       type="number"
                       min={1}
-                      value={it.quantity}
+                      value={it.quantity || 1}
                       onChange={(e) => onChangeQty(it, e.target.value)}
                     />
                     <button className="qty-btn" onClick={() => inc(it)} aria-label="Augmenter">+</button>
@@ -101,11 +108,9 @@ export default function Cart() {
           <div className="cart-summary">
             <div className="sum-label">Total</div>
             <div className="sum-value">{fmt(grandTotal)} DT</div>
-            {items.length > 0 && (
-              <button className="checkout-btn" onClick={() => navigate("/checkout")}>
-                Passer à la commande
-              </button>
-            )}
+            <button className="checkout-btn" onClick={() => navigate("/checkout")}>
+              Passer à la commande
+            </button>
           </div>
         </>
       )}
