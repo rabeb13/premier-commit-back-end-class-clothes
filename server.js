@@ -1,6 +1,7 @@
 // 1 require express
 const express = require("express");
 const cors = require("cors");              // ✅ AJOUT
+const oder = require("./routes/orders");     // ✅ AJOUT
 
 // 2 create instance of express
 const app = express();
@@ -29,7 +30,7 @@ app.use("/api/user", require("./routes/user"));
 app.use("/api/auth", require("./routes/auth"));       
 app.use("/api/products", require("./routes/product"));
 app.use("/api/cart", require("./routes/cart"));
-// app.use("/api/orders", require("./routes/orders"));
+app.use("/api/orders", require("./routes/orders"));
 
 // ✅ Cloudinary upload route
 const cloudinary = require("cloudinary").v2;

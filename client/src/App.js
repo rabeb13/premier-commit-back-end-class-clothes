@@ -18,10 +18,11 @@ import Accessories from "./Pages/Accessories/Accessories";
 import TotalLook from "./Pages/TotalLook/TotalLook";
 import Info from "./Pages/Info/Info";
 import Cart from "./Pages/Cart/Cart";
-import Checkout from "./Pages/Checkout/Checkout";
 import AdminPanel from "./Pages/Admin/AdminPanel";
 import AddProduct from "./Pages/Admin/AddProduct";
 import EditProduct from "./Pages/Admin/EditProduct";
+import Checkout from "./Pages/Checkout/Checkout";
+import OrderConfirmation from "./Components/OrderConfirmation/OrderConfirmation";
 
 import { current } from "./JS/Actions/user";
 import NavBar from "./Components/NavBar";
@@ -77,6 +78,8 @@ const user = useSelector((state) => state.user?.user); // au lieu de currentUser
           <Route path="/info" element={<Info />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-confirmation" element={<OrderConfirmation/>} />
+          
           {/* Route admin protégée */}
           <Route path="/admin" element={user?.isAdmin ? <AdminPanel user={user} /> : <Login />} />
           <Route path="/add-product" element={<AddProduct />} />

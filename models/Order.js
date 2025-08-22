@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
   ],
   total: { type: Number, required: true },
   delivery: { type: String, default: "standard" },
-  paymentMethod: { type: String, default: "card" },
+  paymentMethod: { type: String, default: "espèces" },
   status: { type: String, default: "pending" }, // pending, confirmed, shipped, delivered
   createdAt: { type: Date, default: Date.now }
 });

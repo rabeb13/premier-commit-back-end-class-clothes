@@ -1,26 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const Order = require("../models/Order");
+const { isAuth } = require("../middleware/isAuth"); // middleware auth (JWT)
 
 // POST : créer une nouvelle commande
-router.post("/", async (req, res) => {
-  console.log("Nouvelle commande reçue :", req.body);
-
+router.post("/", isAuth, async (req, res) => {
   try {
-    const { userId, items, total, delivery, paymentMethod } = req.body;
+    const { items, total, delivery, paymentMethod } = req.body;
 
-    // Validation simple
-    if (!userId || !items || !total) {
-      return res.status(400).json({ error: "Champs requis manquants" });
+    if (!items || items.length === 0 || !total) {
+      return res.status(400).json({ error: "Champs requis manquants ou panier vide" });
     }
 
-    // Création de la commande
     const newOrder = new Order({
-      userId,
+      userId: req.user._id, // récupéré via token
       items,
       total,
       delivery: delivery || "standard",
-      paymentMethod: paymentMethod || "card",
+      paymentMethod: paymentMethod || "cash",
       status: "pending",
     });
 
@@ -32,7 +29,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET : récupérer toutes les commandes (optionnel pour admin)
+// GET : récupérer toutes les commandes (admin)
 router.get("/", async (req, res) => {
   try {
     const orders = await Order.find().populate("items.productId");

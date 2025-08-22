@@ -1,14 +1,19 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Checkout.css";
+import { clearCart } from "../../JS/Actions/cart";
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { items = [] } = useSelector((state) => state.cart || {});
+  const user = useSelector((state) => state.user.user);      // objet utilisateur
+  const token = useSelector((state) => state.user.token);    // token JWT
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -17,7 +22,7 @@ export default function Checkout() {
     postalCode: "",
     phone: "",
     delivery: "standard",
-    payment: "card",
+    payment: "cash",
   });
 
   const handleChange = (e) => {
@@ -36,33 +41,47 @@ export default function Checkout() {
       return;
     }
 
-    // Ici tu peux envoyer les données au backend pour créer la commande
+    const order = {
+      userId: user?._id || "guest",
+      userInfo: form,
+      items,
+      total: grandTotal,
+      delivery: form.delivery,
+      paymentMethod: form.payment,
+      status: "pending",
+    };
 
-  const order = {
-    userId: "ID_utilisateur", // si tu as Redux ou JWT, prends l'ID réel
-    userInfo: form,
-    items,
-    total: grandTotal,
-    delivery: form.delivery,
-    paymentMethod: form.payment,
-    status: "pending",
+    try {
+      const res = await axios.post(
+        "http://localhost:5901/api/orders",
+        order,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
+
+      console.log("Commande créée:", res.data);
+      toast.success("Commande confirmée ✔");
+
+      // Vider le panier
+      dispatch(clearCart());
+
+      // Rediriger vers page confirmation
+ setTimeout(
+  () =>
+    navigate("/order-confirmation", {
+      state: { order: { ...res.data, userInfo: form, items } },
+    }),
+  2000
+);
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la création de la commande");
+    }
   };
-
-  try {
-    // ✅ Envoi de la commande au backend
-    const res = await axios.post("http://localhost:5901/api/orders", order);
-
-    console.log("Commande créée:", res.data);
-    toast.success("Commande confirmée ✔");
-
-    // Optionnel : vider le panier et rediriger
-    // dispatch(clearCart());
-    setTimeout(() => navigate("/"), 2000);
-  } catch (err) {
-    console.error(err);
-    toast.error("Erreur lors de la création de la commande");
-  }
-};
 
   return (
     <div className="checkout-wrap">
@@ -157,7 +176,6 @@ export default function Checkout() {
               required
             />
 
-            {/* Livraison */}
             <select
               name="delivery"
               value={form.delivery}
@@ -168,13 +186,8 @@ export default function Checkout() {
               <option value="pickup">Retrait en magasin</option>
             </select>
 
-            {/* Paiement */}
-            <select
-              name="payment"
-              value={form.payment}
-              onChange={handleChange}
-            >
-              <option value="cod">Paiement à la livraison En Espèces</option>
+            <select name="payment" value={form.payment} onChange={handleChange}>
+              <option value="cash">Paiement à la livraison En Espèces</option>
             </select>
 
             <button type="submit" className="confirm-btn">

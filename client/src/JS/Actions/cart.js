@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CART_SET, CART_FAIL, CART_LOAD } from "../ActionsType/cart";
+import { CART_SET, CART_FAIL, CART_LOAD, CLEAR_CART } from "../ActionsType/cart";
 
 axios.defaults.baseURL = import.meta?.env?.VITE_API_URL || "http://localhost:5901";
 
@@ -8,7 +8,6 @@ export const fetchCart = () => async (dispatch) => {
   dispatch({ type: CART_LOAD });
   try {
     const { data } = await axios.get("/api/cart");
-    // ⚡ Normaliser l'image
     const items = (data.items || []).map(i => ({
       ...i,
       image: i.image || i.productId?.images?.[0]?.url || ""
@@ -23,15 +22,7 @@ export const fetchCart = () => async (dispatch) => {
 export const addToCart = ({ productId, color, size, quantity, image, name, price }) => async (dispatch) => {
   dispatch({ type: CART_LOAD });
   try {
-    const { data } = await axios.post("/api/cart/add", {
-      productId,
-      color,
-      size,
-      quantity,
-      image,
-      name,
-      price
-    });
+    const { data } = await axios.post("/api/cart/add", { productId, color, size, quantity, image, name, price });
     const items = (data.items || []).map(i => ({
       ...i,
       image: i.image || i.productId?.images?.[0]?.url || ""
@@ -67,6 +58,18 @@ export const removeCartItem = (itemId) => async (dispatch) => {
       image: i.image || i.productId?.images?.[0]?.url || ""
     }));
     dispatch({ type: CART_SET, payload: items });
+  } catch (error) {
+    dispatch({ type: CART_FAIL, payload: error?.response?.data || error.message });
+  }
+};
+
+// Vider le panier
+export const clearCart = () => async (dispatch) => {
+  dispatch({ type: CART_LOAD });
+  try {
+    await axios.delete("/api/cart/clear"); // À créer côté backend
+    dispatch({ type: CART_SET, payload: [] });
+    dispatch({ type: CLEAR_CART }); // si tu veux déclencher un type spécifique
   } catch (error) {
     dispatch({ type: CART_FAIL, payload: error?.response?.data || error.message });
   }

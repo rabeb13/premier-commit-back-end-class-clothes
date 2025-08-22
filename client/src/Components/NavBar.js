@@ -34,22 +34,23 @@ const NavBar = () => {
   );
 
   // ⚡ Gestion Search (Entrée ou bouton)
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!searchTerm) return;
+const handleSearch = (e) => {
+  e.preventDefault();
+  if (!searchTerm) return;
 
-    const match = pages.find(
-      (p) => p.toLowerCase() === searchTerm.toLowerCase()
-    );
+  const match = pages.find((p) =>
+    p.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    if (match) {
-      navigate(`/${match.toLowerCase()}`);
-      setSearchTerm('');
-      setShowResults(false);
-    } else {
-      alert('Page non trouvée');
-    }
-  };
+  if (match) {
+    navigate(`/${match.toLowerCase()}`);
+    setSearchTerm("");      // vide l'input
+    setShowResults(false);  // ferme le dropdown
+  } else {
+    alert("Page non trouvée");
+  }
+};
+
 
   return (
     <>
