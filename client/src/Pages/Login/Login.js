@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Login.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, clearErrors, current } from '../../JS/Actions/user';
+import { fetchCart } from "../../JS/Actions/cart";   // 👈 import fetchCart
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -19,7 +20,10 @@ const Login = () => {
     if (isAuth && token) {
       dispatch(current())
         .finally(() => {
-          // redirige vers home ou admin si admin
+          // ⚡ Charger le panier utilisateur
+          dispatch(fetchCart());
+
+          // Redirection
           if (currentUser?.isAdmin) navigate('/admin');
           else navigate('/');
         });

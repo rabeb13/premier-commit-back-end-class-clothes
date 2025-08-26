@@ -5,15 +5,25 @@ import {
   CURRENT_USER,
   LOGOUT_USER,
   CLEAR_ERRORS,
-} from '../ActionsType/user';
+  UPDATE_USER,   // manquait ici
+} from "../ActionsType/user";
 
-import axios from 'axios';
+import axios from "axios";
+
+axios.defaults.baseURL = import.meta?.env?.VITE_API_URL || "http://localhost:5901";
+
+// Helper pour ajouter le token
+const authHeader = () => {
+  const token = localStorage.getItem("token");
+  return { headers: { Authorization: `Bearer ${token}` } };
+};
 
 // 🔐 REGISTER
 export const register = (newUser) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
-    const result = await axios.post('/api/user/register', newUser);
+    const result = await axios.post("/api/user/register", newUser);
+    localStorage.setItem("token", result.data.token);
     dispatch({ type: SUCC_USER, payload: result.data }); // { user, token }
   } catch (error) {
     dispatch({
@@ -27,9 +37,8 @@ export const register = (newUser) => async (dispatch) => {
 export const login = (user) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
-    const res = await axios.post('/api/user/login', user);
-    localStorage.setItem('token', res.data.token);
-
+    const res = await axios.post("/api/user/login", user);
+    localStorage.setItem("token", res.data.token);
     dispatch({ type: SUCC_USER, payload: res.data }); // { user, token }
   } catch (error) {
     dispatch({
@@ -41,32 +50,27 @@ export const login = (user) => async (dispatch) => {
 
 // 🔍 CURRENT USER
 export const current = () => async (dispatch) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) return;
 
+  dispatch({ type: LOAD_USER });
   try {
-    const res = await axios.get('/api/user/current', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    dispatch({ type: CURRENT_USER, payload: res.data.user });
+    const res = await axios.get("/api/user/current", authHeader());
+    dispatch({ type: CURRENT_USER, payload: res.data }); // ⚡ backend renvoie req.user direct
   } catch (error) {
-    dispatch({ type: FAIL_USER, payload: error.response.data });
+    dispatch({
+      type: FAIL_USER,
+      payload: error.response?.data || { msg: "Not authorized" },
+    });
   }
 };
-
 
 // 🔄 UPDATE USER PROFILE
 export const updateUser = (userData) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
-    const token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const res = await axios.put('/api/user/update', userData, config);
-    dispatch({ type: SUCC_USER, payload: res.data }); // payload = { msg, user }
+    const res = await axios.put("/api/user/update", userData, authHeader());
+    dispatch({ type: UPDATE_USER, payload: res.data.user }); // ⚡ reducer attend user
   } catch (error) {
     dispatch({
       type: FAIL_USER,

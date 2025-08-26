@@ -13,8 +13,8 @@ export default function cartReducer(state = init, { type, payload }) {
     case CART_FAIL:
       return { ...state, load: false, error: payload };
 
-    case CLEAR_CART:       // vider le panier
-      localStorage.removeItem("cart"); // si tu stockes le panier dans localStorage
+    case CLEAR_CART:
+      localStorage.removeItem("cart");
       return { ...state, items: [] };
 
     default:

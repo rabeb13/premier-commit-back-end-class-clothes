@@ -64,7 +64,7 @@ const handleSearch = (e) => {
 
         <div className="logo">
           <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            Class Clothing
+            CLASS CLOTHING
           </Link>
         </div>
 

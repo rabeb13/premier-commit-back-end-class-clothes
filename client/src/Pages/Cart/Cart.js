@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart, updateCartQty, removeCartItem } from "../../JS/Actions/cart";
 import { useNavigate } from "react-router-dom";
-
 import "./Cart.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,11 +10,19 @@ export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { items = [], load = false, error = null } = useSelector((s) => s.cart || {});
+  const isAuth = useSelector((s) => s.user?.isAuth);
 
   // ⚡ Charger le panier
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
+
+  // 🔹 Debug → voir la structure des items
+  useEffect(() => {
+    if (items?.length) {
+      console.log("CART ITEMS >>>", items);
+    }
+  }, [items]);
 
   // 🔹 Fonctions de mise à jour quantité
   const inc = (item) => {
@@ -67,7 +74,7 @@ export default function Cart() {
               >
                 <div className="cart-col img">
                   <img
-                    src={it.image || it.productId?.image || ""}
+                    src={it.image || it.productId?.images?.[0] || ""}
                     alt={it.name || it.productId?.name || "Produit"}
                     className="cart-img"
                   />
@@ -108,7 +115,12 @@ export default function Cart() {
           <div className="cart-summary">
             <div className="sum-label">Total</div>
             <div className="sum-value">{fmt(grandTotal)} DT</div>
-            <button className="checkout-btn" onClick={() => navigate("/checkout")}>
+            <button
+              className="checkout-btn"
+              onClick={() =>
+                !isAuth ? navigate("/login?redirect=/checkout") : navigate("/checkout")
+              }
+            >
               Passer à la commande
             </button>
           </div>

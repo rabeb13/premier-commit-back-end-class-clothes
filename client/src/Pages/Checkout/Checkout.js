@@ -31,7 +31,7 @@ export default function Checkout() {
   };
 
   const fmt = (n) => Number(n || 0).toFixed(2);
-  const itemTotal = (it) => (it?.productId?.price || 0) * (it?.quantity || 0);
+  const itemTotal = (it) => (it.price || it.productId?.price || 0) * (it.quantity || 0);
   const grandTotal = items.reduce((sum, it) => sum + itemTotal(it), 0);
 
   const handleSubmit = async (e) => {
@@ -62,20 +62,19 @@ export default function Checkout() {
         }
       );
 
-      console.log("Commande créée:", res.data);
       toast.success("Commande confirmée ✔");
 
       // Vider le panier
       dispatch(clearCart());
 
       // Rediriger vers page confirmation
- setTimeout(
-  () =>
-    navigate("/order-confirmation", {
-      state: { order: { ...res.data, userInfo: form, items } },
-    }),
-  2000
-);
+      setTimeout(
+        () =>
+          navigate("/order-confirmation", {
+            state: { order: { ...res.data, userInfo: form, items } },
+          }),
+        2000
+      );
 
     } catch (err) {
       console.error(err);
@@ -102,17 +101,17 @@ export default function Checkout() {
                   className="checkout-item"
                 >
                   <img
-                    src={it.image || it.productId?.image}
-                    alt={it.productId?.name}
+                    src={it.image || it.productId?.images?.[0]?.url || ""}
+                    alt={it.name || it.productId?.name || "Produit"}
                     className="checkout-img"
                   />
                   <div>
-                    <p>{it.productId?.name}</p>
+                    <p>{it.name || it.productId?.name || "Produit"}</p>
                     <p>
-                      {it.color} • {it.size}
+                      {it.color || "-"} • {it.size || "-"}
                     </p>
                     <p>
-                      {it.quantity} × {fmt(it.productId?.price)} DT ={" "}
+                      {it.quantity} × {fmt(it.price || it.productId?.price)} DT ={" "}
                       {fmt(itemTotal(it))} DT
                     </p>
                   </div>

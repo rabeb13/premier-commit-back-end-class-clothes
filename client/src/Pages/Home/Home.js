@@ -13,9 +13,6 @@ const suggestionsData = [
   { id: 2, name: 'Ceinture à rivets', price: '17,99', image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
   { id: 4, name: 'Ceinture chaîne étoiles de mer', price: '12,99', image: 'https://images.unsplash.com/photo-1705326454933-9685fc6888e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
   { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://images.unsplash.com/photo-1610213665246-eb2df074f8e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
-  { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://images.unsplash.com/photo-1723802205505-2f88b2227718?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YWNjZXNzb2lyZXN8ZW58MHx8MHx8fDA%3D' },
-  { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://plus.unsplash.com/premium_photo-1709033404514-c3953af680b4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YWNjZXNzb2lyZXN8ZW58MHx8MHx8fDA%3D' },
-
 ];
 
 const categories = [
@@ -24,9 +21,6 @@ const categories = [
   { title: 'Dresses', image: 'https://plus.unsplash.com/premium_photo-1674718918254-8f96b77c12d8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3Nlc3xlbnwwfHwwfHx8MA%3D%3D', link: '/dresses' },
   { title: 'Shoes', image: 'https://plus.unsplash.com/premium_photo-1676234844384-82e1830af724?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGFsb25zJTIwaGF1dHN8ZW58MHx8MHx8fDA%3D', link: '/shoes' },
   { title: 'Bags', image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJhZ3N8ZW58MHx8MHx8fDA%3D', link: '/bags' },
-  { title: 'Accessories', image: 'https://images.unsplash.com/photo-1569388330292-79cc1ec67270?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YWNjZXNzb3JpZXN8ZW58MHx8MHx8fDA%3D', link: '/accessories' },
-  { title: 'Total Look', image: 'https://plus.unsplash.com/premium_photo-1733936811796-06b37c3b4a63?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFubmVxdWluJTIwaGFiaWxsJUMzJUE5fGVufDB8fDB8fHww', link: '/total-look' },
-  { title: 'Basics', image: 'https://images.unsplash.com/photo-1653661242725-c863e8020586?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGJhc2ljcyUyMHZldGVtZW50c3xlbnwwfHwwfHx8MA%3D%3D', link: '/basics' },
 ];
 
 const newArrivals = [
@@ -48,7 +42,7 @@ const Home = () => {
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    responsive:  [
+    responsive: [
       { breakpoint: 1024, settings: { slidesToShow: 2 }},
       { breakpoint: 768, settings: { slidesToShow: 1 }},
     ]
@@ -56,7 +50,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      
+
       {/* Slider catégories */}
       <Slider {...settings} className="slider-categories">
         {categories.map(cat => (
@@ -73,30 +67,66 @@ const Home = () => {
       <section className="new-arrivals">
         <h2>NEW ARRIVALS</h2>
         <div className="products-grid">
-          {newArrivals.map(p => (
-            <div key={p.id} className="product-card">
-              <img src={p.image} alt={p.name} />
-              <p>{p.name}</p>
-              <span>{p.price} TND</span>
-            </div>
-          ))}
+          {newArrivals.map(p => {
+            let link = "";
+            switch(p.id) {
+              case 1: link = "/dresses"; break;
+              case 2: link = "/shoes"; break;
+              case 3: link = "/jeans"; break;
+              case 4: link = "/blouses"; break;
+              default: link = "/"; 
+            }
+            return (
+              <div 
+                key={p.id} 
+                className="product-card"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(link)}
+              >
+                <img src={p.image} alt={p.name} />
+                <p>{p.name}</p>
+                <span>{p.price} TND</span>
+              </div>
+            );
+          })}
         </div>
-        <button className="view-all-btn" onClick={() => navigate('/new-arrivals')}>
+        {/* <button className="view-all-btn" onClick={() => navigate('/new-arrivals')}>
           VIEW ALL
-        </button>
+        </button> */}
       </section>
-
-      {/* Promotions */}
-      <section className="promotions">
-        <img src="https://plus.unsplash.com/premium_photo-1674718917175-70e7062732e5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dmVzdGUlMjBkb3Vkb3VuZXxlbnwwfHwwfHx8MA%3D%3D" alt="Sale Banner" />
-        <div className="promo-text">
-          <h2>UP TO 50% OFF</h2>
-          <p>WOMEN'S CLOTHING</p>
-        </div>
-      </section>
-<section>
-  <Suggestions products={suggestionsData} />
+{/* Promotions */}
+<section 
+  className="promotions-section" 
+  onClick={() => navigate('/accessories')}
+>
+  <img src="https://plus.unsplash.com/premium_photo-1674718917175-70e7062732e5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dmVzdGUlMjBkb3Vkb3VuZXxlbnwwfHwwfHx8MA%3D%3D" 
+       alt="Sale Banner" />
+  <div className="promo-text">
+    <h2>UP TO 50% OFF</h2>
+    <p>WOMEN'S CLOTHING</p>
+  </div>
 </section>
+
+
+{/* Suggestions */}
+<section 
+  className="suggestions-section"
+  onClick={() => navigate('/accessories')}
+>
+  <h2>Suggestions</h2>
+  <div className="suggestions-grid">
+    {suggestionsData.map(p => (
+      <div key={p.id} className="product-card">
+        <img src={p.image} alt={p.name} />
+        <p>{p.name}</p>
+        <span>{p.price} TND</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
       {/* Footer */}
       {/* <Footer /> */}
     </div>
