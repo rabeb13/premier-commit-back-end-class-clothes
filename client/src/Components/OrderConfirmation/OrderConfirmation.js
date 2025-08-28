@@ -77,6 +77,8 @@ export default function OrderConfirmation() {
       <Link to="/" className="back-home-btn">
         Retour à l'accueil
       </Link>
+      <Link to="/my-orders" className="btn">Voir mes commandes</Link>
+
     </div>
   );
 }

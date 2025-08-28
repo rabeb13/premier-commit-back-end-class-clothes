@@ -132,3 +132,14 @@
 .delete-btn:hover {
   background: #b91c1c;
 }
+.modal-backdrop{
+  position: fixed; inset:0; background: rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center; z-index: 50;
+}
+.modal-card{
+  width:min(920px, 95vw);
+  background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,.15);
+  padding:16px; max-height:90vh; overflow:auto;
+}
+.modal-header, .modal-footer{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.modal-section{ margin:16px 0; }

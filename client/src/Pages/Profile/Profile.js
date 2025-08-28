@@ -1,43 +1,30 @@
+// src/Pages/Profile/Profile.jsx
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import './Profile.css';
-import { UPDATE_USER } from '../../JS/ActionsType/user';
+import { UPDATE_USER, CURRENT_USER } from '../../JS/ActionsType/user';
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userRedux = useSelector((state) => state.user.user);
-
   const [user, setUser] = useState(userRedux || null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    zip: '',
-  });
+  const [formData, setFormData] = useState({ name:'', email:'', phone:'', address:'', city:'', zip:'' });
 
   useEffect(() => {
     let mounted = true;
-
-    const fetchUser = async () => {
+    (async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          if (mounted) setLoading(false);
-          return;
-        }
+        if (!token) { if (mounted) setLoading(false); return; }
 
-        const res = await axios.get('/api/user/current', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const currentUser = res.data?.user || res.data;
-
+        const res = await axios.get('/api/user/current', { headers: { Authorization: `Bearer ${token}` } });
+        const currentUser = res.data; // ✅ user direct
         if (mounted && currentUser) {
           setUser(currentUser);
           setFormData({
@@ -48,46 +35,29 @@ const Profile = () => {
             city: currentUser.city || '',
             zip: currentUser.zip || '',
           });
-          dispatch({ type: UPDATE_USER, payload: currentUser });
+          dispatch({ type: CURRENT_USER, payload: currentUser }); // ✅ garde le store aligné
         }
       } catch (err) {
-        // Si 401 ou autre: nettoyer éventuellement le token
-        if (err?.response?.status === 401) {
-          localStorage.removeItem('token');
-        }
+        if (err?.response?.status === 401) localStorage.removeItem('token');
         console.error(err);
       } finally {
         if (mounted) setLoading(false);
       }
-    };
-
-    fetchUser();
+    })();
     return () => { mounted = false; };
   }, [dispatch]);
 
-  // Attendre le fetch avant de décider
   if (loading) return null;
-
-  // Si pas de token, forcer la connexion
-  if (!localStorage.getItem('token')) {
-    return <Navigate to="/login" />;
-  }
-
-  // Encore en cours d’hydratation ? on peut afficher un skeleton si besoin
+  if (!localStorage.getItem('token')) return <Navigate to="/login" />;
   if (!user) return null;
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+      const handleChange = (e) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async () => {
-    try {
+      const handleSubmit = async () => {
+      try {
       const token = localStorage.getItem('token');
-      const res = await axios.put('/api/user/update', formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const updatedUser = res.data?.user || res.data;
+      const res = await axios.put('/api/user/update', formData, { headers: { Authorization: `Bearer ${token}` } });
+      const updatedUser = res.data?.user; // ✅ backend renvoie { user }
       alert(res.data?.msg || 'Profil mis à jour');
       setUser(updatedUser);
       dispatch({ type: UPDATE_USER, payload: updatedUser });
@@ -98,8 +68,8 @@ const Profile = () => {
     }
   };
 
-  return (
-    <div className="profile-page">
+       return (
+      <div className="profile-page">
       <h1>Bienvenue {user.name}</h1>
 
       {editMode ? (
@@ -110,7 +80,6 @@ const Profile = () => {
           <input name="address" value={formData.address} onChange={handleChange} placeholder="Adresse" />
           <input name="city" value={formData.city} onChange={handleChange} placeholder="Ville" />
           <input name="zip" value={formData.zip} onChange={handleChange} placeholder="Code postal" />
-
           <button onClick={handleSubmit}>Enregistrer</button>
           <button onClick={() => setEditMode(false)}>Annuler</button>
         </div>
@@ -123,7 +92,17 @@ const Profile = () => {
           <p><strong>Code postal :</strong> {user.zip || 'Non renseigné'}</p>
 
           <button onClick={() => setEditMode(true)}>Modifier mes coordonnées</button>
+          <div className="profile-actions" style={{ marginBottom: 12 }}>
+          <button
+          className="btn orders-btn"
+          onClick={() => navigate("/my-orders")}
+          >
+        🧾 Mes commandes
+        </button>
         </div>
+
+        </div>
+        
       )}
     </div>
   );

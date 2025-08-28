@@ -24,8 +24,12 @@ import AddProduct from "./Pages/Admin/AddProduct";
 import EditProduct from "./Pages/Admin/EditProduct";
 import Checkout from "./Pages/Checkout/Checkout";
 import OrderConfirmation from "./Components/OrderConfirmation/OrderConfirmation";
+import MyOrders from "./Pages/Orders/MyOrders";
+import OrderDetail from "./Pages/Orders/OrderDetail";
+
 
 import { current } from "./JS/Actions/user";
+
 import NavBar from "./Components/NavBar";
 import Footer from "./Components/Footer";
 import LoginPanel from "./Components/LoginPanel";
@@ -56,15 +60,18 @@ function App() {
       {showLogin && (
         <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
       )}
+<ToastContainer
+  position="top-right"
+  autoClose={2000}
+  hideProgressBar={false}
+  newestOnTop
+  closeOnClick
+  pauseOnHover
+  draggable
+  theme="colored"
+  containerStyle={{ top: 70, right: 16, zIndex: 2147483647 }} // 👈 important
+/>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        pauseOnHover
-      />
 
       <main>
         <Routes>
@@ -93,6 +100,8 @@ function App() {
             path="/order-confirmation"
             element={isAuth ? <OrderConfirmation /> : <Login />}
           />
+         <Route path="/my-orders" element={<MyOrders />} />
+         <Route path="/order/:id" element={<OrderDetail />} />
 
           {/* Route admin protégée */}
           <Route

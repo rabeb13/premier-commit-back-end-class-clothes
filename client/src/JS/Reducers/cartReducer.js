@@ -14,7 +14,8 @@ export default function cartReducer(state = init, { type, payload }) {
       return { ...state, load: false, error: payload };
 
     case CLEAR_CART:
-      localStorage.removeItem("cart");
+      // vider aussi le panier invité
+      localStorage.removeItem("guestCart");
       return { ...state, items: [] };
 
     default:

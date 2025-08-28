@@ -5,7 +5,7 @@ import {
   CURRENT_USER,
   LOGOUT_USER,
   CLEAR_ERRORS,
-  UPDATE_USER,   // manquait ici
+  UPDATE_USER,
 } from "../ActionsType/user";
 
 import axios from "axios";
@@ -28,7 +28,7 @@ export const register = (newUser) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FAIL_USER,
-      payload: error.response?.data?.errors || [{ msg: "Register failed" }],
+      payload: error?.response?.data?.errors || [{ msg: "Register failed" }],
     });
   }
 };
@@ -43,12 +43,12 @@ export const login = (user) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: FAIL_USER,
-      payload: error.response?.data?.errors || [{ msg: "Login failed" }],
+      payload: error?.response?.data?.errors || [{ msg: "Login failed" }],
     });
   }
 };
 
-// 🔍 CURRENT USER
+// 🔍 CURRENT USER (backend renvoie l'utilisateur direct)
 export const current = () => async (dispatch) => {
   const token = localStorage.getItem("token");
   if (!token) return;
@@ -56,11 +56,11 @@ export const current = () => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
     const res = await axios.get("/api/user/current", authHeader());
-    dispatch({ type: CURRENT_USER, payload: res.data }); // ⚡ backend renvoie req.user direct
+    dispatch({ type: CURRENT_USER, payload: res.data }); // res.data = user
   } catch (error) {
     dispatch({
       type: FAIL_USER,
-      payload: error.response?.data || { msg: "Not authorized" },
+      payload: error?.response?.data || { msg: "Not authorized" },
     });
   }
 };
@@ -70,11 +70,17 @@ export const updateUser = (userData) => async (dispatch) => {
   dispatch({ type: LOAD_USER });
   try {
     const res = await axios.put("/api/user/update", userData, authHeader());
-    dispatch({ type: UPDATE_USER, payload: res.data.user }); // ⚡ reducer attend user
+    const updatedUser = res?.data?.user;
+
+    // 1) mettre à jour le user dans le store (merge côté reducer)
+    dispatch({ type: UPDATE_USER, payload: updatedUser });
+
+    // 2) garder le store global synchronisé (utile si d'autres vues lisent CURRENT_USER)
+    dispatch({ type: CURRENT_USER, payload: updatedUser });
   } catch (error) {
     dispatch({
       type: FAIL_USER,
-      payload: error.response?.data?.errors || [{ msg: "Update failed" }],
+      payload: error?.response?.data?.errors || [{ msg: "Update failed" }],
     });
   }
 };

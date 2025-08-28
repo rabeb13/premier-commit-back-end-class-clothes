@@ -62,13 +62,45 @@ router.get("/:id", isAuth, async (req, res) => {
 router.get("/", isAuth, adminOnly, async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("items.productId")
-      .populate("userId", "name email"); // infos user utiles pour admin
+      .populate("items.productId", "name price images adress")
+      .populate("userId", "name email phone"); // infos user utiles pour admin
     res.json(orders);
   } catch (err) {
     console.error("Erreur récupération commandes :", err.message);
     res.status(500).json({ error: err.message });
   }
 });
+// PATCH statut commande (admin)
+router.patch("/:id/status", isAuth, adminOnly, async (req, res) => {
+  try {
+    const allowed = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
+    const { status } = req.body;
+    if (!allowed.includes(status)) {
+      return res.status(400).json({ error: "Statut invalide" });
+    }
+
+    const update = { status };
+    if (status === "shipped") update.shippedAt = new Date();
+    if (status === "delivered") update.deliveredAt = new Date();
+    if (status === "cancelled") update.cancelledAt = new Date();
+
+    const order = await Order.findByIdAndUpdate(req.params.id, { $set: update }, { new: true });
+    if (!order) return res.status(404).json({ error: "Commande introuvable" });
+
+    res.json(order);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+router.delete("/:id", isAuth, adminOnly, async (req, res) => {
+  try {
+    const deleted = await Order.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: "Commande introuvable" });
+    res.json({ ok: true, deletedId: req.params.id });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 module.exports = router;

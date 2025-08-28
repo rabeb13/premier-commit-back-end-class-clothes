@@ -37,10 +37,7 @@ const userReducer = (state = initialState, { type, payload }) => {
       return { ...state, user: payload, isAuth: true, load: false };
 
     case UPDATE_USER:   // nouvelle action pour update profil
-      return {
-        ...state,
-        user: payload,
-      };
+    return { ...state, user: { ...state.user, ...payload }, load: false }; // merge
 
     case FAIL_USER:
       return { ...state, errors: payload, load: false };
