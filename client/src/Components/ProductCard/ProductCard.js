@@ -16,11 +16,13 @@ export default function ProductCard({ product }) {
 
   // ⚡ Choisir l’image correspondant à la couleur
   const getImageByColor = (color) => {
-    const imgObj = product.images.find(img => img.color === color);
-    return imgObj ? imgObj.url : product.images[0]?.url || "";
+    const imgObj = product.images?.find((img) => img.color === color);
+    return imgObj ? imgObj.url : product.images?.[0]?.url || "";
   };
 
-  const displayedImage = selectedColor ? getImageByColor(selectedColor) : product.images[0]?.url || "";
+  // ✅ Toujours une image valide (même sans couleur choisie)
+  const displayedImage =
+    selectedColor ? getImageByColor(selectedColor) : product.images?.[0]?.url || "";
 
   const handleAddToCart = () => {
     if (!selectedColor || !selectedSize) {
@@ -43,12 +45,14 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="product-card">
+      {/* ✅ Toujours afficher une image au lieu de [object Object] */}
       <img src={displayedImage} alt={product.name} className="product-img" />
+
       <h3>{product.name}</h3>
       <p>{product.price} DT</p>
 
       <div className="colors">
-        {product.colors?.map(c => (
+        {product.colors?.map((c) => (
           <button
             key={c}
             onClick={() => setSelectedColor(c)}
@@ -65,7 +69,7 @@ export default function ProductCard({ product }) {
       </div>
 
       <div className="sizes">
-        {product.sizes?.map(s => (
+        {product.sizes?.map((s) => (
           <button
             key={s}
             onClick={() => setSelectedSize(s)}

@@ -6,7 +6,7 @@ const { isAuth, adminOnly } = require("../middleware/isAuth"); // middleware aut
 // POST : créer une nouvelle commande
 router.post("/", isAuth, async (req, res) => {
   try {
-    const { items, total, delivery, paymentMethod } = req.body;
+    const { items, total, delivery, paymentMethod, shippingAddress } = req.body;
 
     if (!items || items.length === 0 || !total) {
       return res.status(400).json({ error: "Champs requis manquants ou panier vide" });
@@ -19,6 +19,15 @@ router.post("/", isAuth, async (req, res) => {
       delivery: delivery || "standard",
       paymentMethod: paymentMethod || "cash",
       status: "pending",
+
+      // ✅ on enregistre l'adresse de livraison
+      shippingAddress: {
+        name: shippingAddress?.name || "",
+        phone: shippingAddress?.phone || "",
+        address: shippingAddress?.address || "",
+        city: shippingAddress?.city || "",
+        zip: shippingAddress?.zip || "",
+      },
     });
 
     await newOrder.save();
@@ -32,7 +41,9 @@ router.post("/", isAuth, async (req, res) => {
 // GET : récupérer mes commandes (user connecté)
 router.get("/my", isAuth, async (req, res) => {
   try {
-    const myOrders = await Order.find({ userId: req.user._id }).populate("items.productId");
+    const myOrders = await Order.find({ userId: req.user._id })
+      .populate("items.productId")
+      .sort({ createdAt: -1 });
     res.json(myOrders);
   } catch (err) {
     console.error("Erreur récupération mes commandes :", err.message);
@@ -62,14 +73,18 @@ router.get("/:id", isAuth, async (req, res) => {
 router.get("/", isAuth, adminOnly, async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("items.productId", "name price images adress")
-      .populate("userId", "name email phone"); // infos user utiles pour admin
+      // ✅ on ne met PAS "adress" (qui n'existe pas sur Product)
+      .populate("items.productId", "name price images")
+      .populate("userId", "name email phone")
+      .sort({ createdAt: -1 });
+
     res.json(orders);
   } catch (err) {
     console.error("Erreur récupération commandes :", err.message);
     res.status(500).json({ error: err.message });
   }
 });
+
 // PATCH statut commande (admin)
 router.patch("/:id/status", isAuth, adminOnly, async (req, res) => {
   try {
@@ -92,6 +107,8 @@ router.patch("/:id/status", isAuth, adminOnly, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+// DELETE : supprimer une commande (admin)
 router.delete("/:id", isAuth, adminOnly, async (req, res) => {
   try {
     const deleted = await Order.findByIdAndDelete(req.params.id);
@@ -101,6 +118,5 @@ router.delete("/:id", isAuth, adminOnly, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-
 
 module.exports = router;

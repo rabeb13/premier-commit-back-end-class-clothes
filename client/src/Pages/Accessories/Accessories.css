@@ -1,15 +1,15 @@
-.dresses-page {
+.jaccessories-page {
   padding: 20px;
 }
 
-.dresses-title {
+.accessories-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
   font-weight: 700;
 }
 
-.dresses-grid {
+.accessories-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* exactement 4 colonnes */
   gap: 30px; /* espace entre les cartes */

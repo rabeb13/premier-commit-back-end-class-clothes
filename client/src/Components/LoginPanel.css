@@ -1,3 +1,4 @@
+/* overlay shouldn’t catch clicks */
 .login-panel-overlay {
   position: fixed;
   top: 0;
@@ -6,17 +7,22 @@
   height: 100vh;
   background-color: #fff;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  z-index: 9999;
+  z-index: 9990;                 /* lower than the toast (10000) */
   padding: 40px;
   overflow-y: auto;
   font-family: 'Helvetica Neue', sans-serif;
+
+  pointer-events: none;          /* ← key line */
 }
 
+/* only the panel itself is interactive */
 .login-panel {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  pointer-events: auto;          /* ← re-enable clicks inside */
 }
+
 
 .close-btn {
   background: none;

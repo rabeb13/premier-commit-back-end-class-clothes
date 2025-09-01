@@ -1,10 +1,22 @@
-import React from "react";
-import { useLocation, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./OrderConfirmation.css";
 
 export default function OrderConfirmation() {
   const location = useLocation();
-  const { order } = location.state || {}; // récupérer les infos envoyées depuis Checkout
+  const navigate = useNavigate();
+  const { order, justConfirmed } = location.state || {}; 
+
+  useEffect(() => {
+    if (justConfirmed) {
+      toast.dismiss("order-confirmed");
+      toast.success("Commande confirmée ✓", { toastId: "order-confirmed", autoClose: 2500 });
+
+      // ⚡ Nettoyer l’état sinon le toast se relance en cas de refresh/back
+      navigate(".", { replace: true, state: { order } });
+    }
+  }, [justConfirmed, navigate, order]);
 
   if (!order) {
     return (
@@ -18,13 +30,14 @@ export default function OrderConfirmation() {
   }
 
   const fmt = (n) => Number(n || 0).toFixed(2);
+  const addr = order.shippingAddress || {};
 
   return (
     <div className="order-confirm-wrap">
       <h2>Commande confirmée ✔</h2>
       <p>
         Merci pour votre commande,{" "}
-        <strong>{order.userInfo?.name || "client"}</strong> !
+        <strong>{addr.name || "client"}</strong> !
       </p>
 
       <div className="order-summary">
@@ -43,6 +56,17 @@ export default function OrderConfirmation() {
             {order.paymentMethod === "cash"
               ? "En espèces"
               : order.paymentMethod || "N/A"}
+          </strong>
+        </p>
+        <p>
+          Téléphone : <strong>{addr.phone || "—"}</strong>
+        </p>
+        <p>
+          Adresse :{" "}
+          <strong>
+            {addr.address
+              ? [addr.address, addr.city, addr.zip].filter(Boolean).join(", ")
+              : "—"}
           </strong>
         </p>
       </div>
@@ -78,7 +102,6 @@ export default function OrderConfirmation() {
         Retour à l'accueil
       </Link>
       <Link to="/my-orders" className="btn">Voir mes commandes</Link>
-
     </div>
   );
 }

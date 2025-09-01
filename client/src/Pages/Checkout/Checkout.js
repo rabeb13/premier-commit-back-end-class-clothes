@@ -40,41 +40,39 @@ export default function Checkout() {
       toast.error("Veuillez remplir tous les champs obligatoires !");
       return;
     }
+const order = {
+  userId: user?._id || "guest",
+  items,
+  total: grandTotal,
+  delivery: form.delivery,
+  paymentMethod: form.payment,
+  status: "pending",
+  shippingAddress: {
+    name: form.name,
+    phone: form.phone,
+    address: form.address,
+    city: form.city,
+    zip: form.postalCode,
+  },
+};
 
-    const order = {
-      userId: user?._id || "guest",
-      userInfo: form,
-      items,
-      total: grandTotal,
-      delivery: form.delivery,
-      paymentMethod: form.payment,
-      status: "pending",
-    };
+try {
+  const res = await axios.post("http://localhost:5901/api/orders", order, {
+    headers: { Authorization: token ? `Bearer ${token}` : "" },
+  });
 
-    try {
-      const res = await axios.post(
-        "http://localhost:5901/api/orders",
-        order,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+  // ✅ pas de toast ici, juste vider le panier et rediriger
+  dispatch(clearCart());
 
-      toast.success("Commande confirmée ✔");
+  setTimeout(() =>
+  navigate("/order-confirmation", {
+    state: { order: { ...res.data, shippingAddress: order.shippingAddress, items }, justConfirmed: true },
+  }),
+2000);
 
-      // Vider le panier
-      dispatch(clearCart());
 
-      // Rediriger vers page confirmation
-      setTimeout(
-        () =>
-          navigate("/order-confirmation", {
-            state: { order: { ...res.data, userInfo: form, items } },
-          }),
-        2000
-      );
+
+
 
     } catch (err) {
       console.error(err);

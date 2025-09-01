@@ -1,7 +1,7 @@
 // src/Components/SearchBar.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import "./SearchBar.css";
+import "./SearchBar.css";
 
 const SearchBar = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ const SearchBar = () => {
   const [results, setResults] = useState([]);
 
   // Liste de toutes les catégories/pages
-  const categories = ["tshirts", "jeans", "dresses", "accessories"];
+  const categories = ["tshirts", "jeans", "dresses", "accessories","shoes"];
 
   const handleChange = (e) => {
     const value = e.target.value;

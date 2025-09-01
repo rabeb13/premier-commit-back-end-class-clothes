@@ -7,10 +7,6 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-column">
           <h4>HELP</h4>
-          <a href="#">HOW TO SHOP ONLINE</a>
-          <a href="#">PAYMENT</a>
-          <a href="#">DELIVERY</a>
-          <a href="#">EXCHANGES AND RETURNS</a>
           <a href="#">SIZE GUIDE</a>
         </div>
 
@@ -27,8 +23,22 @@ const Footer = () => {
 
         <div className="footer-column">
           <h4>SOCIAL</h4>
-          <a href="#">INSTAGRAM</a>
-          <a href="#">FACEBOOK</a>
+{/* Lien Instagram */}
+          <a
+            href="https://www.instagram.com/class_clothing_hbh/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            INSTAGRAM
+          </a>        
+             {/* Lien Facebook */}
+          <a
+            href="https://www.facebook.com/profile.php?id=61554849483493"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            FACEBOOK
+          </a>
         </div>
       </div>
 

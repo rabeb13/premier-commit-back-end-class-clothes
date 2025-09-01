@@ -9,10 +9,10 @@ import "slick-carousel/slick/slick-theme.css";
 import './Home.css';
 
 const suggestionsData = [
-  { id: 1, name: 'Ceinture à maillons', price: '12,99', image: 'https://plus.unsplash.com/premium_photo-1681276168324-a6f1958aa191?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
-  { id: 2, name: 'Ceinture à rivets', price: '17,99', image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
-  { id: 4, name: 'Ceinture chaîne étoiles de mer', price: '12,99', image: 'https://images.unsplash.com/photo-1705326454933-9685fc6888e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
-  { id: 5, name: 'Ceinture chaîne spirales', price: '12,99', image: 'https://images.unsplash.com/photo-1610213665246-eb2df074f8e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
+  { id: 1, name: 'Bracelet', price: '12,99', image: 'https://plus.unsplash.com/premium_photo-1681276168324-a6f1958aa191?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
+  { id: 2, name: 'Bracelet', price: '17,99', image: 'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YnJhY2VsZXR8ZW58MHx8MHx8fDA%3D' },
+  { id: 4, name: 'Boucle doreille ', price: '12,99', image: 'https://images.unsplash.com/photo-1705326454933-9685fc6888e1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
+  { id: 5, name: 'Boucle doreille ', price: '12,99', image: 'https://images.unsplash.com/photo-1610213665246-eb2df074f8e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJvdWNsZSUyMGRvcmVpbGxlfGVufDB8fDB8fHww' },
 ];
 
 const categories = [
@@ -26,7 +26,7 @@ const categories = [
 const newArrivals = [
   { id: 1, name: "Robe", price: 59.99, image: "https://plus.unsplash.com/premium_photo-1708276242787-387acf1bbd4b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cm9iZSUyMHRyZW5kfGVufDB8fDB8fHww"},
   { id: 2, name: "Talon", price: 89.99, image: "https://plus.unsplash.com/premium_photo-1668698471580-02f5c8eb739a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHRhbG9ufGVufDB8fDB8fHww" },
-  { id: 3, name: "Bonnet", price: 49.99, image: "https://images.unsplash.com/photo-1676790408057-b56c464beb0f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGNhc3F1ZXR0ZSUyMHRyZW5kfGVufDB8fDB8fHww" },
+  { id: 3, name: "Jeans", price: 49.99, image: "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8amVhbnN8ZW58MHx8MHx8fDA%3D" },
   { id: 4, name: "Veste", price: 39.99, image: "https://plus.unsplash.com/premium_photo-1675186049366-64a655f8f537?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmVzdGV8ZW58MHx8MHx8fDA%3D" },
 ];
 

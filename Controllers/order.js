@@ -1,12 +1,8 @@
-const Order = require("../models/Order");
-
-// Créer une nouvelle commande
 exports.createOrder = async (req, res) => {
   console.log("Nouvelle commande reçue :", req.body);
   try {
-    const { userId, items, total, delivery, paymentMethod } = req.body;
+    const { userId, items, total, delivery, paymentMethod, shippingAddress } = req.body;
 
-    // Vérification basique
     if (!userId || !items || !total) {
       return res.status(400).json({ error: "Champs requis manquants" });
     }
@@ -18,6 +14,13 @@ exports.createOrder = async (req, res) => {
       delivery: delivery || "standard",
       paymentMethod: paymentMethod || "card",
       status: "pending",
+      shippingAddress: {
+        name: shippingAddress?.name || "",
+        phone: shippingAddress?.phone || "",
+        address: shippingAddress?.address || "",
+        city: shippingAddress?.city || "",
+        zip: shippingAddress?.zip || "",
+      },
     });
 
     await newOrder.save();
@@ -27,14 +30,16 @@ exports.createOrder = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-// Récupérer toutes les commandes (optionnel pour admin)
+// Récupérer toutes les commandes (pour Admin)
 exports.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find().populate("items.productId");
-    res.json(orders);
+    const orders = await Order.find()
+      .populate("items.productId") // optionnel : pour avoir le détail produit
+      .sort({ createdAt: -1 });    // plus récentes d'abord
+
+    res.status(200).json(orders);
   } catch (err) {
-    console.error(err.message);
+    console.error("Erreur getOrders:", err.message);
     res.status(500).json({ error: err.message });
   }
 };

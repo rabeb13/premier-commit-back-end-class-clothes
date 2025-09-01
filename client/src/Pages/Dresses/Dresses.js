@@ -5,23 +5,20 @@ import { getProducts } from "../../JS/Actions/product";
 import { addToCart } from "../../JS/Actions/cart";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Dresses.css"; // On peut réutiliser le même CSS que Tshirts
+import "./Dresses.css";
 
 const Dresses = () => {
   const dispatch = useDispatch();
   const { listProducts, load, error } = useSelector((state) => state.product);
 
-  // Charger tous les produits au montage
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  // Filtrer uniquement les jeans
   const dresses = listProducts.filter(
     (product) => product.category?.toLowerCase() === "dresses"
   );
 
-  // Ajouter un produit au panier
   const handleAddToCart = (product) => {
     dispatch(
       addToCart({
@@ -45,9 +42,9 @@ const Dresses = () => {
   if (error) return <p style={{ color: "red" }}>{String(error)}</p>;
 
   return (
-    <div className="jeans-page">
-      <h2 className="jeans-title">Dresses</h2>
-      <div className="jeans-grid">
+    <div className="dresses-page">
+      <h2 className="dresses-title">Dresses</h2>
+      <div className="dresses-grid">
         {dresses.map((product) => (
           <ProductCard
             key={product._id}

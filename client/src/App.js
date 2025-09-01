@@ -61,16 +61,16 @@ function App() {
         <LoginPanel show={showLogin} onClose={() => setShowLogin(false)} />
       )}
 <ToastContainer
-  position="top-right"
-  autoClose={2000}
-  hideProgressBar={false}
-  newestOnTop
-  closeOnClick
-  pauseOnHover
-  draggable
-  theme="colored"
-  containerStyle={{ top: 70, right: 16, zIndex: 2147483647 }} // 👈 important
-/>
+        position="top-right"
+        autoClose={2500}
+        closeOnClick
+        pauseOnHover={false}
+        draggable={false}
+        newestOnTop
+        limit={3}
+        theme="colored"
+        style={{ zIndex: 10000 }}   // ← passe devant les overlays/menu
+      />
 
 
       <main>

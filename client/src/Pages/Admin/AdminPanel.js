@@ -77,32 +77,35 @@ const AdminPanel = () => {
   };
 
   const fmt = (n) => Number(n || 0).toFixed(2);
-  const clientName = (o) => o?.userId?.name || o?.shippingAddress?.name || "—";
-  const clientPhone = (o) => o?.userId?.phone || o?.shippingAddress?.phone || "—";
+
+  // ✅ Helpers avec fallback: shippingAddress (nouveau) → userInfo (ancien) → userId
+  const addrOf = (o) => o?.shippingAddress || o?.userInfo || {};
+  const clientName = (o) => addrOf(o).name || o?.userId?.name || "—";
+  const clientPhone = (o) => addrOf(o).phone || o?.userId?.phone || "—";
   const clientEmail = (o) => o?.userId?.email || "—";
   const clientAddress = (o) => {
-    const a = o?.shippingAddress || {};
-    const parts = [a.address, a.city, a.zip].filter(Boolean);
+    const a = addrOf(o);
+    const parts = [a.address, a.city, a.zip || a.postalCode].filter(Boolean);
     return parts.length ? parts.join(", ") : "—";
   };
+
   const lineImage = (i) =>
     i?.image || i?.productId?.images?.[0]?.url || i?.productId?.images?.[0] || "";
 
   const openOrderModal = (o) => { setSelectedOrder(o); setShowOrderModal(true); };
   const closeOrderModal = () => { setSelectedOrder(null); setShowOrderModal(false); };
 
-  // ✅ TOUS LES HOOKS AVANT LE RETURN
-  // Produits filtrés (pas besoin de useMemo ici, mais possible)
   const filteredProducts = categoryFilter
-    ? listProducts?.filter((p) => p.category?.toLowerCase() === categoryFilter.toLowerCase())
+    ? (listProducts || []).filter(
+        (p) => p.category?.toLowerCase() === categoryFilter.toLowerCase()
+      )
     : listProducts;
 
-  // ✅ useMemo non conditionnel
   const filteredOrders = useMemo(() => {
     if (!orders?.length) return [];
     const from = dateFrom ? new Date(dateFrom) : null;
     const to = dateTo ? new Date(dateTo) : null;
-    if (to) { to.setHours(23, 59, 59, 999); }
+    if (to) to.setHours(23, 59, 59, 999);
     return orders.filter((o) => {
       const d = new Date(o.createdAt || o.placedAt);
       if (from && d < from) return false;
@@ -111,7 +114,6 @@ const AdminPanel = () => {
     });
   }, [orders, dateFrom, dateTo]);
 
-  // ❌ PAS D’EARLY RETURN — on gère en JSX
   const isLoadingAll = user === null || loading;
 
   return (
@@ -129,6 +131,8 @@ const AdminPanel = () => {
                 <li onClick={() => setCategoryFilter("tshirts")}>👕 Tshirts</li>
                 <li onClick={() => setCategoryFilter("jeans")}>👖 Jeans</li>
                 <li onClick={() => setCategoryFilter("dresses")}>👗 Dresses</li>
+                <li onClick={() => setCategoryFilter("shoes")}>👟 Shoes</li>
+                <li onClick={() => setCategoryFilter("accessories")}>👜 Accessories</li>
               </ul>
             </nav>
           </aside>
@@ -158,23 +162,31 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProducts?.map((p) => (
+                  {(filteredProducts || []).map((p) => (
                     <tr key={p._id}>
                       <td>{p.name}</td>
                       <td>{p.category}</td>
                       <td>{Number(p.price).toFixed(1)} DT</td>
                       <td>
-                        <button onClick={() => navigate(`/edit-product/${p._id}`)} className="edit-btn">
+                        <button
+                          onClick={() => navigate(`/edit-product/${p._id}`)}
+                          className="edit-btn"
+                        >
                           ✏ Modifier
                         </button>
-                        <button onClick={() => handleDeleteProduct(p._id)} className="delete-btn">
+                        <button
+                          onClick={() => handleDeleteProduct(p._id)}
+                          className="delete-btn"
+                        >
                           🗑 Supprimer
                         </button>
                       </td>
                     </tr>
                   ))}
-                  {filteredProducts?.length === 0 && (
-                    <tr><td colSpan="4">Aucun produit trouvé</td></tr>
+                  {(!filteredProducts || filteredProducts.length === 0) && (
+                    <tr>
+                      <td colSpan="4">Aucun produit trouvé</td>
+                    </tr>
                   )}
                 </tbody>
               </table>
@@ -185,16 +197,19 @@ const AdminPanel = () => {
               <h2>Commandes</h2>
 
               {/* Filtres par date */}
-              <div className="filters-row" style={{ display:"flex", gap:12, alignItems:"center", marginBottom:12 }}>
+              <div
+                className="filters-row"
+                style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}
+              >
                 <div>
                   <label>Du</label>
-                  <input type="date" value={dateFrom} onChange={(e)=>setDateFrom(e.target.value)} />
+                  <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
                 </div>
                 <div>
                   <label>Au</label>
-                  <input type="date" value={dateTo} onChange={(e)=>setDateTo(e.target.value)} />
+                  <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
                 </div>
-                <button className="edit-btn" onClick={()=>{ setDateFrom(""); setDateTo(""); }}>
+                <button className="edit-btn" onClick={() => { setDateFrom(""); setDateTo(""); }}>
                   Réinitialiser
                 </button>
               </div>
@@ -203,7 +218,7 @@ const AdminPanel = () => {
                 <p>Chargement des commandes…</p>
               ) : ordersError ? (
                 <p style={{ color: "red" }}>Erreur : {String(ordersError?.error || ordersError)}</p>
-              ) : filteredOrders?.length === 0 ? (
+              ) : filteredOrders.length === 0 ? (
                 <p>Aucune commande pour ce filtre.</p>
               ) : (
                 <table className="product-table">
@@ -238,10 +253,7 @@ const AdminPanel = () => {
                         <td>{fmt(o.total)} DT</td>
                         <td>{o.status}</td>
                         <td>
-                          <select
-                            value={o.status}
-                            onChange={(e) => updateStatus(o._id, e.target.value)}
-                          >
+                          <select value={o.status} onChange={(e) => updateStatus(o._id, e.target.value)}>
                             {ALLOWED_STATUS.map((s) => (
                               <option key={s} value={s}>{s}</option>
                             ))}

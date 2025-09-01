@@ -1,15 +1,15 @@
-.dresses-page {
+.shoes-page {
   padding: 20px;
 }
 
-.dresses-title {
+.shoes-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
   font-weight: 700;
 }
 
-.dresses-grid {
+.shoes-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* exactement 4 colonnes */
   gap: 30px; /* espace entre les cartes */
@@ -18,14 +18,14 @@
 
 /* Tablette (≤ 1024px) → 2 colonnes */
 @media (max-width: 1024px) {
-  .dresses-grid {
+  .tshirts-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Mobile (≤ 600px) → 1 colonne */
 @media (max-width: 600px) {
-  .dresses-grid {
+  .tshirts-grid {
     grid-template-columns: 1fr;
   }
 }
