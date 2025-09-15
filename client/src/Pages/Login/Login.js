@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, clearErrors, current } from '../../JS/Actions/user';
 import { fetchCart } from "../../JS/Actions/cart";   // 👈 import fetchCart
 import { useNavigate } from 'react-router-dom';
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPwd, setShowPwd] = useState(false); // + NEW state
 
   // Redirection après login si authentifié
   useEffect(() => {
@@ -74,35 +76,42 @@ const Login = () => {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="input-field"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="pw-field">
+    <input
+      type={showPwd ? "text" : "password"}
+      placeholder="Password"
+      className="input-field pw-input"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+    <button
+      type="button"
+      className="pw-toggle"
+      onClick={() => setShowPwd((s) => !s)}
+      aria-label={showPwd ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+    >
+      {showPwd ? <FiEyeOff /> : <FiEye />}
+    </button>
+  </div>
 
-          <p className="password-requirements">
-            Your password must contain at least 8 characters, an uppercase and a lowercase letter and a number.
-            Please do not repeat the same character more than three times.
-          </p>
+  <p className="password-requirements">
+    Your password must contain at least 8 characters, an uppercase and a lowercase letter and a number.
+    Please do not repeat the same character more than three times.
+  </p>
 
-          <div className="options">
-            <label>
-              <input type="checkbox" />
-              Stay logged in
-            </label>
-            <a href="#">Have you forgotten your password?</a>
-          </div>
+  <div className="options">
+    <label><input type="checkbox" />Stay logged in</label>
+    <a href="#">Have you forgotten your password?</a>
+  </div>
 
-          <button className="login-btn" type="submit">Log in</button>
-        </form>
+  <button className="login-btn" type="submit">Log in</button>
+</form>
 
         <div className="divider" />
         <p className="signup-text">Don't have an account?</p>
         <button className="create-btn" onClick={() => navigate('/register')}>
-          Create account
+          Create accountttt
         </button>
       </div>
     </div>

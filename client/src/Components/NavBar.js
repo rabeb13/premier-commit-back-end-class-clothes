@@ -1,13 +1,15 @@
 // src/Components/NavBar.jsx
 import React, { useState } from 'react';
 import { FaBars, FaSearch, FaUser, FaShoppingBag } from 'react-icons/fa';
+import { HiOutlineSearch } from "react-icons/hi";     // Heroicons
+import { FiSearch } from "react-icons/fi";           // Feather icons
+
 import SideMenu from './SideMenu';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../JS/Actions/user';
 import LoginPanel from './LoginPanel';
 import './NavBar.css';
-
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -63,10 +65,11 @@ const handleSearch = (e) => {
         </div>
 
         <div className="logo">
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            CLASS CLOTHING
-          </Link>
-        </div>
+  <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '6px' }}>
+    <span>TRENDORIA</span>
+  </Link>
+</div>
+
 
         <div className="right-section">
           {/* SearchBar */}
@@ -83,7 +86,8 @@ const handleSearch = (e) => {
               onBlur={() => setTimeout(() => setShowResults(false), 150)}
             />
             <button type="submit" className="search-button">
-              <FaSearch className="nav-icon" />
+    <FiSearch className="nav-icon" />   
+    {/* 👈 plus classe */}
             </button>
 
             {showResults && searchTerm && (

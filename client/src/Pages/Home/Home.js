@@ -16,11 +16,11 @@ const suggestionsData = [
 ];
 
 const categories = [
-  { title: 'T-Shirts', image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/tshirts' },
-  { title: 'Jeans', image: 'https://plus.unsplash.com/premium_photo-1674828601362-afb73c907ebe?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8amVhbnN8ZW58MHx8MHx8fDA%3D', link: '/jeans' },
-  { title: 'Dresses', image: 'https://plus.unsplash.com/premium_photo-1674718918254-8f96b77c12d8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8ZHJlc3Nlc3xlbnwwfHwwfHx8MA%3D%3D', link: '/dresses' },
-  { title: 'Shoes', image: 'https://plus.unsplash.com/premium_photo-1676234844384-82e1830af724?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGFsb25zJTIwaGF1dHN8ZW58MHx8MHx8fDA%3D', link: '/shoes' },
-  { title: 'Bags', image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJhZ3N8ZW58MHx8MHx8fDA%3D', link: '/bags' },
+  { title: 'T-Shirts', image: 'https://images.unsplash.com/photo-1643881080002-afdc695936e0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fHRzaGlydHN8ZW58MHx8MHx8fDA%3D', link: '/tshirts' },
+  { title: 'Jeans', image: 'https://images.unsplash.com/photo-1604176354204-9268737828e4?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/jeans' },
+  { title: 'Dresses', image: 'https://plus.unsplash.com/premium_photo-1673481601147-ee95199d3896?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', link: '/dresses' },
+  { title: 'Shoes', image: 'https://plus.unsplash.com/premium_photo-1711051513016-72baa1035293?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHNob2VzfGVufDB8fDB8fHww', link: '/shoes' },
+  { title: 'Bags', image: 'https://images.unsplash.com/photo-1613482184972-f9c1022d0928?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGJhZ3N8ZW58MHx8MHx8fDA%3D', link: '/bags' },
 ];
 
 const newArrivals = [

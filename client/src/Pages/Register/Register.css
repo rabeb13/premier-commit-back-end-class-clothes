@@ -1,4 +1,4 @@
-/* Register.css */
+Register.css
 .register-page{
   min-height:100vh;
   display:flex;
@@ -40,3 +40,33 @@
 .register-card button:hover {
   background-color: #d81b60;
 }
+/* Champ mot de passe avec œil */
+.pw-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pw-input {
+  width: 100%;
+  padding-right: 40px; /* place pour l’icône */
+}
+
+/* Bouton œil commun (Login & Register) */
+.pw-toggle {
+  position: absolute;
+  right: 10px;          /* pour Register, on a mis style={{ right: 14 }} */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #241133;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pw-toggle:hover { color: #111; }

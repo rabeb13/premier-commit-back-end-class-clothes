@@ -24,6 +24,39 @@
 }
 
 
+.input-field {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+}
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin: 15px 0;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 14px;
+  border: none;
+  border-radius: 40px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.signup-text {
+  font-size: 13px;
+  text-align: center;
+}
+
 .close-btn {
   background: none;
   border: none;
@@ -95,3 +128,42 @@ h2 {
   font-size: 16px;
   cursor: pointer;
 }
+/* Champ password avec œil */
+.pw-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pw-input {
+  width: 100%;
+  padding-right: 40px; /* place pour l’icône à droite */
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #302626;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.pw-toggle:hover { color: #221f1f; }
+.forgot-btn {
+  background: none;
+  border: none;
+  color: #111;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+}
+.forgot-btn:hover { opacity: .8; }

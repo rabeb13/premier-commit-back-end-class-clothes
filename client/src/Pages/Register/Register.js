@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { register } from '../../JS/Actions/user';
 import { Button, Form, Container, Card } from 'react-bootstrap';
 import './Register.css';
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Register = () => {
   const [newUser, setNewUser] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPwd, setShowPwd] = useState(false); // + NEW state
 
   // ✅ Récupération du user et isAuth depuis le store
   const { user, isAuth, errors } = useSelector((state) => state.user);
@@ -59,15 +61,25 @@ const Register = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="formPassword" className="mb-3">
-            <Form.Control
-              type="password"
-              name="password"
-              placeholder="Mot de passe"
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
+          <Form.Group controlId="formPassword" className="mb-3 position-relative">
+    <Form.Control
+      type={showPwd ? "text" : "password"}
+      name="password"
+      placeholder="Mot de passe"
+      onChange={handleChange}
+      required
+      className="pe-5"  // place pour l’icône à droite
+    />
+    <button
+      type="button"
+      className="pw-toggle"
+      onClick={() => setShowPwd((s) => !s)}
+      aria-label={showPwd ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+      style={{ right: 14 }} // petit ajustement pour le contrôle bootstrap
+    >
+      {showPwd ? <FiEyeOff /> : <FiEye />}
+    </button>
+  </Form.Group>
 
           <Form.Group controlId="formPhone" className="mb-4">
             <Form.Control

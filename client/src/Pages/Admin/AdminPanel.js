@@ -140,14 +140,23 @@ const AdminPanel = () => {
           {/* Main */}
           <div className="main">
             {/* Header */}
-            <header className="header">
-              <h1>Tableau de bord</h1>
-              <div>
-                <button onClick={() => navigate("/add-product")} className="add-btn">
-                  + Ajouter un produit
-                </button>
-              </div>
-            </header>
+<header className="header">
+  <h1>Tableau de bord</h1>
+  <div>
+    <button onClick={() => navigate("/add-product")} className="add-btn">
+      + Ajouter un produit
+    </button>
+    {/* 👇 Nouveau bouton minimal */}
+    <button
+      onClick={() => navigate("/admin/bulk-products")}
+      className="add-btn"
+      style={{ marginLeft: 8 }}
+    >
+      ⚡ Ajout / Modif en masse
+    </button>
+  </div>
+</header>
+
 
             {/* Produits */}
             <div className="content">

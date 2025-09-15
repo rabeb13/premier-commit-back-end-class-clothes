@@ -1,7 +1,7 @@
 // 1 require express
 const express = require("express");
-const cors = require("cors");              // ✅ AJOUT
-const oder = require("./routes/orders");     // ✅ AJOUT
+const cors = require("cors");              
+const oder = require("./routes/orders");     
 
 // 2 create instance of express
 const app = express();

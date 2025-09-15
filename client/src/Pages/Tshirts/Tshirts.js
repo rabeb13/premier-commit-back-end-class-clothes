@@ -46,7 +46,7 @@ const Tshirts = () => {
 
   return (
     <div className="tshirts-page">
-      <h2 className="tshirts-title">T-shirts</h2>
+      <h2 className="tshirts-title">T-shirts et Chemise</h2>
       <div className="tshirts-grid">
         {tshirts.map((product) => (
           <ProductCard
