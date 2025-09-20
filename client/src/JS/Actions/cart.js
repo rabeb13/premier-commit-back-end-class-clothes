@@ -1,7 +1,7 @@
 import axios from "axios";
 import { CART_SET, CART_FAIL, CART_LOAD, CLEAR_CART } from "../ActionsType/cart";
 
-axios.defaults.baseURL = import.meta?.env?.VITE_API_URL || "http://localhost:5901";
+axios.defaults.baseURL = import.meta?.env?.VITE_API_URL ;
 
 // ---------- Helpers ----------
 const getToken = () => localStorage.getItem("token");

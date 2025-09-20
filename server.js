@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",  // CRA
-      "http://localhost:5173",  // Vite
+      "https://premier-commit-back-end-class-clothes-1.onrender.com",  // Vite
     ],
     credentials: false,
   })

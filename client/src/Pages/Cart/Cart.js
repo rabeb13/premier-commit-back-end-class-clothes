@@ -2,29 +2,28 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart, updateCartQty, removeCartItem } from "../../JS/Actions/cart";
 import { useNavigate } from "react-router-dom";
-import "./Cart.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Cart.css";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const { items = [], load = false, error = null } = useSelector((s) => s.cart || {});
   const isAuth = useSelector((s) => s.user?.isAuth);
 
-  // ⚡ Charger le panier
+  // Charger le panier
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
 
-  // 🔹 Debug → voir la structure des items
+  // Debug → voir la structure des items
   useEffect(() => {
-    if (items?.length) {
-      console.log("CART ITEMS >>>", items);
-    }
+    if (items.length) console.log("CART ITEMS >>>", items);
   }, [items]);
 
-  // 🔹 Fonctions de mise à jour quantité
+  // Fonctions de mise à jour quantité
   const inc = (item) => {
     dispatch(updateCartQty(item._id, item.quantity + 1));
     toast.success("Quantité mise à jour ✔");
@@ -47,13 +46,13 @@ export default function Cart() {
     toast.warn("Article supprimé du panier");
   };
 
-  // 🔹 Calculs
+  // Calculs
   const fmt = (n) => Number(n || 0).toFixed(2);
   const unitPrice = (it) => Number(it.price || it.productId?.price || 0);
   const itemTotal = (it) => unitPrice(it) * (it.quantity || 0);
   const grandTotal = items.reduce((sum, it) => sum + itemTotal(it), 0);
 
-  // ⚡ Affichage état
+  // Affichage état
   if (load) return <div className="cart-wrap"><div className="cart-status">Chargement…</div></div>;
   if (error) return <div className="cart-wrap"><div className="cart-status error">{String(error)}</div></div>;
 
@@ -67,9 +66,9 @@ export default function Cart() {
       ) : (
         <>
           <div className="cart-list">
-            {items.map((it, index) => (
+            {items.map((it, idx) => (
               <div
-                key={`${it._id}-${it.color}-${it.size}-${index}`}
+                key={`${it._id}-${it.color}-${it.size}-${idx}`}
                 className="cart-row"
               >
                 <div className="cart-col img">

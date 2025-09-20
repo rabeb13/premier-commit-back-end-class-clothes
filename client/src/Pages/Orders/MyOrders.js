@@ -4,24 +4,32 @@ import { Link } from "react-router-dom";
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
-  const [load, setLoad] = useState(true);
-  const [err, setErr] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    (async () => {
+    const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const { data } = await axios.get("/api/orders/my", {
+        if (!token) throw new Error("Utilisateur non authentifié");
+
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/orders/my`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         setOrders(data || []);
-      } catch (e) { setErr(e?.response?.data || e.message); }
-      finally { setLoad(false); }
-    })();
+      } catch (err) {
+        setError(err?.response?.data?.error || err.message || "Erreur inconnue");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
   }, []);
 
-  if (load) return <div>Chargement…</div>;
-  if (err) return <div>Erreur : {String(err?.error || err)}</div>;
+  if (loading) return <div>Chargement…</div>;
+  if (error) return <div className="error">Erreur : {error}</div>;
 
   const fmt = (n) => Number(n || 0).toFixed(2);
 
@@ -34,17 +42,23 @@ export default function MyOrders() {
         <table>
           <thead>
             <tr>
-              <th>Numéro</th><th>Date</th><th>Total</th><th>Statut</th><th></th>
+              <th>Numéro</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Statut</th>
+              <th>Détails</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map(o => (
+            {orders.map((o) => (
               <tr key={o._id}>
                 <td>{o._id}</td>
                 <td>{new Date(o.createdAt || o.placedAt).toLocaleString()}</td>
                 <td>{fmt(o.total)} DT</td>
-                <td>{o.status}</td>
-                <td><Link to={`/order/${o._id}`}>Voir</Link></td>
+                <td>{o.status || "En attente"}</td>
+                <td>
+                  <Link to={`/order/${o._id}`}>Voir</Link>
+                </td>
               </tr>
             ))}
           </tbody>
