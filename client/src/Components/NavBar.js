@@ -66,7 +66,7 @@ const handleSearch = (e) => {
 
         <div className="logo">
   <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center', gap: '6px' }}>
-    <span>TRENDORIA</span>
+    <span>Trendoria</span>
   </Link>
 </div>
 
