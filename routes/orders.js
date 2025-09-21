@@ -13,14 +13,12 @@ router.post("/", isAuth, async (req, res) => {
     }
 
     const newOrder = new Order({
-      userId: req.user._id, // récupéré via token
+      userId: req.user._id, 
       items,
       total,
       delivery: delivery || "standard",
       paymentMethod: paymentMethod || "cash",
       status: "pending",
-
-      // ✅ on enregistre l'adresse de livraison
       shippingAddress: {
         name: shippingAddress?.name || "",
         phone: shippingAddress?.phone || "",
@@ -38,6 +36,20 @@ router.post("/", isAuth, async (req, res) => {
   }
 });
 
+// GET : récupérer toutes les commandes (admin uniquement)
+router.get("/", isAuth, adminOnly, async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("items.productId", "name price images")
+      .populate("userId", "name email phone")
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error("Erreur récupération commandes :", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET : récupérer mes commandes (user connecté)
 router.get("/my", isAuth, async (req, res) => {
   try {
@@ -47,40 +59,6 @@ router.get("/my", isAuth, async (req, res) => {
     res.json(myOrders);
   } catch (err) {
     console.error("Erreur récupération mes commandes :", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// GET : récupérer une commande par ID (propriétaire ou admin)
-router.get("/:id", isAuth, async (req, res) => {
-  try {
-    const order = await Order.findById(req.params.id).populate("items.productId");
-    if (!order) return res.status(404).json({ error: "Commande introuvable" });
-
-    // Vérifier si l'utilisateur est propriétaire ou admin
-    if (order.userId.toString() !== req.user._id.toString() && !req.user.isAdmin) {
-      return res.status(403).json({ error: "Accès interdit" });
-    }
-
-    res.json(order);
-  } catch (err) {
-    console.error("Erreur récupération commande :", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// GET : récupérer toutes les commandes (admin uniquement)
-router.get("/", isAuth, adminOnly, async (req, res) => {
-  try {
-    const orders = await Order.find()
-      // ✅ on ne met PAS "adress" (qui n'existe pas sur Product)
-      .populate("items.productId", "name price images")
-      .populate("userId", "name email phone")
-      .sort({ createdAt: -1 });
-
-    res.json(orders);
-  } catch (err) {
-    console.error("Erreur récupération commandes :", err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -105,6 +83,23 @@ router.patch("/:id/status", isAuth, adminOnly, async (req, res) => {
     res.json(order);
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+// GET : récupérer une commande par ID (propriétaire ou admin)
+router.get("/:id", isAuth, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate("items.productId");
+    if (!order) return res.status(404).json({ error: "Commande introuvable" });
+
+    if (order.userId.toString() !== req.user._id.toString() && !req.user.isAdmin) {
+      return res.status(403).json({ error: "Accès interdit" });
+    }
+
+    res.json(order);
+  } catch (err) {
+    console.error("Erreur récupération commande :", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
