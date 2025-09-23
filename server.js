@@ -59,24 +59,6 @@ app.post("/api/upload", upload.single("image"), async (req, res) => {
 // 8. Health check
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
-// -----------------------------
-// -----------------------------
-// // SERVIR LE FRONTEND CRA BUILD
-// // -----------------------------
-// // Si on est en production (sur Render)
-// if (process.env.NODE_ENV === "production") {
-//   // chemin vers le build CRA
-//   const frontendPath = path.join(__dirname, "client", "build");
-
-//   // servir les fichiers statiques (JS, CSS, images)
-//   app.use(express.static(frontendPath));
-
-//   // catch-all : toutes les routes non-API renvoient index.html
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.join(frontendPath, "index.html"));
-//   });
-// }
-
 
 // 10. PORT
 const PORT = process.env.PORT || 5901;

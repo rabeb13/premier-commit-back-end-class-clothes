@@ -23,7 +23,12 @@ const categories = [
   { title: 'Shoes', image: 'https://plus.unsplash.com/premium_photo-1711051513016-72baa1035293?w=600&auto=format&fit=crop&q=60', link: '/shoes' },
   { title: 'Bags', image: 'https://images.unsplash.com/photo-1613482184972-f9c1022d0928?w=600&auto=format&fit=crop&q=60', link: '/bags' },
 ];
-
+const newArrivals = [
+  { id: 1, name: "Robe", price: 59.99, image: "https://plus.unsplash.com/premium_photo-1708276242787-387acf1bbd4b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cm9iZSUyMHRyZW5kfGVufDB8fDB8fHww"},
+  { id: 2, name: "Talon", price: 89.99, image: "https://plus.unsplash.com/premium_photo-1668698471580-02f5c8eb739a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHRhbG9ufGVufDB8fDB8fHww" },
+  { id: 3, name: "Jeans", price: 49.99, image: "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8amVhbnN8ZW58MHx8MHx8fDA%3D" },
+  { id: 4, name: "Veste", price: 39.99, image: "https://plus.unsplash.com/premium_photo-1675186049366-64a655f8f537?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmVzdGV8ZW58MHx8MHx8fDA%3D" },
+]
 const Home = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -64,22 +69,34 @@ const Home = () => {
         ))}
       </Slider>
 
-      {/* Nouveautés - produits depuis backend */}
+
+      {/* Nouveautés */}
+{/* Nouveautés - produits depuis backend */}
       <section className="new-arrivals">
         <h2>NEW ARRIVALS</h2>
         <div className="products-grid">
-          {products.map(p => (
-            <div 
-              key={p._id} 
-              className="product-card"
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate(`/products/${p._id}`)}
-            >
-              <img src={p.image} alt={p.name} />
-              <p>{p.name}</p>
-              <span>{p.price} TND</span>
-            </div>
-          ))}
+          {newArrivals.map(p => {
+            let link = "";
+            switch(p.id) {
+              case 1: link = "/dresses"; break;
+              case 2: link = "/shoes"; break;
+              case 3: link = "/jeans"; break;
+              case 4: link = "/blouses"; break;
+              default: link = "/"; 
+            }
+            return (
+              <div 
+                key={p.id} 
+                className="product-card"
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(link)}
+              >
+                <img src={p.image} alt={p.name} />
+                <p>{p.name}</p>
+                <span>{p.price} TND</span>
+              </div>
+            );
+          })}
         </div>
       </section>
 
