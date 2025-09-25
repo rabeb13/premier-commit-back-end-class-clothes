@@ -5,23 +5,21 @@ import { getProducts } from "../../JS/Actions/product";
 import { addToCart } from "../../JS/Actions/cart";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./Bags.css"; 
+import "./Veste.css";
 
-const Bags = () => {
+const Veste = () => {
   const dispatch = useDispatch();
   const { listProducts, load, error } = useSelector((state) => state.product);
 
-  // Charger tous les produits au montage
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  // Filtrer uniquement les bags
-  const bags = listProducts.filter(
-    (product) => product.category?.toLowerCase() === "bags"
+  // Filtrer uniquement les produits de la catégorie "blouses"
+  const veste = listProducts.filter(
+    (product) => product.category?.toLowerCase() === "veste"
   );
 
-  // Ajouter un produit au panier
   const handleAddToCart = (product) => {
     dispatch(
       addToCart({
@@ -45,10 +43,10 @@ const Bags = () => {
   if (error) return <p style={{ color: "red" }}>{String(error)}</p>;
 
   return (
-    <div className="bags-page">
-      <h2 className="bags-title">Bags</h2>
-      <div className="bags-grid">
-        {bags.map((product) => (
+    <div className="veste-page">
+      <h2 className="veste-title">Veste</h2>
+      <div className="veste-grid">
+        {veste.map((product) => (
           <ProductCard
             key={product._id}
             product={product}
@@ -60,4 +58,4 @@ const Bags = () => {
   );
 };
 
-export default Bags;
+export default Veste;

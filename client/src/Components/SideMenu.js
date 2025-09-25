@@ -45,7 +45,7 @@ const SideMenu = ({ show, onClose }) => {
                 <Link to="/tshirts" onClick={handleLinkClick}>T-shirts</Link>
                 <Link to="/jeans" onClick={handleLinkClick}>Jeans</Link>
                 <Link to="/dresses" onClick={handleLinkClick}>Dresses</Link>
-                <Link to="/blouses" onClick={handleLinkClick}>Blouses</Link>
+                <Link to="/veste" onClick={handleLinkClick}>Veste</Link>
               </div>
             )}
           </div>

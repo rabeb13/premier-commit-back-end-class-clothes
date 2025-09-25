@@ -111,7 +111,7 @@ const Login = () => {
         <div className="divider" />
         <p className="signup-text">Don't have an account?</p>
         <button className="create-btn" onClick={() => navigate('/register')}>
-          Create accountttt
+          Create account
         </button>
       </div>
     </div>

@@ -4,15 +4,6 @@
   background: #f4f6f9;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background: #111827;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
 
 .sidebar .logo {
   font-size: 1.5rem;

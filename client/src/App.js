@@ -11,7 +11,7 @@ import Error from "./Pages/Error";
 import Tshirts from "./Pages/Tshirts/Tshirts";
 import Jeans from "./Pages/Jeans/Jeans";
 import Dresses from "./Pages/Dresses/Dresses";
-import Blouses from "./Pages/Blouses/Blouses";
+import Veste from "./Pages/Veste/Veste";
 import Shoes from "./Pages/Shoes/Shoes";
 import Bags from "./Pages/Bags/Bags";
 import Accessories from "./Pages/Accessories/Accessories";
@@ -84,7 +84,7 @@ function App() {
           <Route path="/tshirts" element={<Tshirts />} />
           <Route path="/jeans" element={<Jeans />} />
           <Route path="/dresses" element={<Dresses />} />
-          <Route path="/blouses" element={<Blouses />} />
+          <Route path="/veste" element={<Veste/>} />
           <Route path="/shoes" element={<Shoes />} />
           <Route path="/bags" element={<Bags />} />
           <Route path="/accessories" element={<Accessories />} />

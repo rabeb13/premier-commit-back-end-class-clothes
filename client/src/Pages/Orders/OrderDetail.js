@@ -15,7 +15,7 @@ export default function OrderDetail() {
         if (!token) throw new Error("Utilisateur non authentifié");
 
         const { data } = await axios.get(
-          `${process.env.REACT_APP_API_URL}/orders/${id}`,
+          `/orders/${id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setOrder(data);

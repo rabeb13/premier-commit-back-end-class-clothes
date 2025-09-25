@@ -1,4 +1,4 @@
-.jaccessories-page {
+.accessories-page {
   padding: 20px;
 }
 
@@ -18,14 +18,14 @@
 
 /* Tablette (≤ 1024px) → 2 colonnes */
 @media (max-width: 1024px) {
-  .dresses-grid {
+  .accessories-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Mobile (≤ 600px) → 1 colonne */
 @media (max-width: 600px) {
-  .dresses-grid {
+  .accessories-grid {
     grid-template-columns: 1fr;
   }
 }

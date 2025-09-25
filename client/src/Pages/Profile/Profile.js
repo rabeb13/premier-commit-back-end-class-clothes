@@ -6,6 +6,7 @@ import axios from 'axios';
 import './Profile.css';
 import { UPDATE_USER, CURRENT_USER } from '../../JS/ActionsType/user';
 import { useNavigate } from "react-router-dom";
+import { logout } from '../../JS/Actions/user';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -99,6 +100,18 @@ const Profile = () => {
           >
         🧾 Mes commandes
         </button>
+        {/* Bouton Logout */}
+  <button
+    className="btn logout-btn"
+    onClick={() => {
+      dispatch(logout());       // Redux : supprime user du store
+      localStorage.removeItem('token'); // supprime token
+      navigate('/');            // redirige vers accueil
+    }}
+    style={{ marginLeft: 10 }}
+  >
+    🔒 Logout
+  </button>
         </div>
 
         </div>

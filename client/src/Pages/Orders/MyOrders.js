@@ -13,7 +13,8 @@ export default function MyOrders() {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Utilisateur non authentifié");
 
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/orders/my`, {
+        // ✅ URL corrigée : base + route
+        const { data } = await axios.get(`/orders/my`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

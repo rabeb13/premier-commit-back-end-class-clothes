@@ -133,6 +133,9 @@ const AdminPanel = () => {
                 <li onClick={() => setCategoryFilter("dresses")}>👗 Dresses</li>
                 <li onClick={() => setCategoryFilter("shoes")}>👟 Shoes</li>
                 <li onClick={() => setCategoryFilter("accessories")}>👜 Accessories</li>
+                <li onClick={() => setCategoryFilter("veste")}> 🧥Veste</li>
+                <li onClick={() => setCategoryFilter("bags")}> 👝 bags</li>
+
               </ul>
             </nav>
           </aside>

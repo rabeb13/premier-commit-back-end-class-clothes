@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { FaBars, FaSearch, FaUser, FaShoppingBag } from 'react-icons/fa';
 import { HiOutlineSearch } from "react-icons/hi";     // Heroicons
 import { FiSearch } from "react-icons/fi";           // Feather icons
+import { User, ShoppingBag } from "lucide-react";
 
 import SideMenu from './SideMenu';
 import { useNavigate, Link } from 'react-router-dom';
@@ -24,7 +25,7 @@ const NavBar = () => {
   );
 
   // Liste des pages/catégories
-  const pages = ['Tshirts', 'Jeans', 'Dresses', 'Accessories'];
+  const pages = ['Tshirts', 'Jeans', 'Dresses', 'Accessories', 'Veste', 'bags'];
 
   const handleLogout = () => {
     dispatch(logout());
@@ -115,9 +116,10 @@ const handleSearch = (e) => {
 
           {/* Panier */}
           <Link to="/cart" className="cart-link">
-            <FaShoppingBag className="nav-icon" />
-            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
-          </Link>
+<ShoppingBag className="nav-icon" size={22} strokeWidth={1.5} color="#000" />
+  {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+</Link>
+
 
           {/* Admin Panel */}
           {isAuth && user?.isAdmin && (
@@ -128,13 +130,14 @@ const handleSearch = (e) => {
 
           {/* Login / Profil */}
           {!isAuth ? (
-            <FaUser className="nav-icon" onClick={() => setShowLogin(true)} title="Mon compte" />
-          ) : (
-            <FaUser className="nav-icon" onClick={() => navigate('/profile')} title="Mon profil" />
-          )}
+  <User className="nav-icon" strokeWidth={1.5} onClick={() => setShowLogin(true)} title="Mon compte" />
+) : (
+  <User className="nav-icon" strokeWidth={1.5} onClick={() => navigate('/profile')} title="Mon profil" />
+)}
+
 
           {/* Logout */}
-          {isAuth && <button onClick={handleLogout} className="logout-btn">Logout</button>}
+          {/* {isAuth && <button onClick={handleLogout} className="logout-btn">Logout</button>} */}
         </div>
       </header>
 
